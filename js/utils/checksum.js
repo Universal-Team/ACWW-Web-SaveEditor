@@ -24,6 +24,8 @@
 		  reasonable ways as different from the original version.
 */
 
+import { SavData } from '../utils/savutils.js';
+
 /*
 	Calculates the checksum.
 
@@ -32,7 +34,7 @@
 	checkoffs: The checksum offset / 2, cause uint16_t.
 	length: The length to calculate / 2, cause uint16_t.
 */
-function CalculateChecksum(buffer, startoffs, checkoffs, length) {
+export function CalculateChecksum(buffer, startoffs, checkoffs, length) {
 	if (!buffer) return 0;
 
 	let checksVar = 0;
@@ -55,7 +57,7 @@ function CalculateChecksum(buffer, startoffs, checkoffs, length) {
 	length: The length to calculate / 2, cause uint16_t.
 	currentChecksum: The current checksum value.
 */
-function ChecksumValid(buffer, startoffs, checkoffs, length, currentChecksum) {
+export function ChecksumValid(buffer, startoffs, checkoffs, length, currentChecksum) {
 	if (!buffer) return false;
 
 	return (Boolean)(CalculateChecksum(buffer, startoffs, checkoffs, length) == currentChecksum);
@@ -69,7 +71,7 @@ function ChecksumValid(buffer, startoffs, checkoffs, length, currentChecksum) {
 	checkoffs: The checksum offset.
 	length: The length to calculate / 2, cause uint16_t.
 */
-function fixMainChecksum(buffer, startoffs, checkoffs, length) {
+export function fixMainChecksum(buffer, startoffs, checkoffs, length) {
 	if (!buffer) return;
 
 	if (!ChecksumValid(buffer, startoffs, (checkoffs / 2), length, buffer.getUint16(checkoffs, true))) {

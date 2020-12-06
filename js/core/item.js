@@ -24,11 +24,11 @@
 		  reasonable ways as different from the original version.
 */
 
-/*
-	Return the Item's name.
+import Items from '../strings/en/items.js';
 
-	ID: The item ID.
+/*
+	Returns the name of the Item ID.
+
+	ID: uint16_t Item ID.
 */
-function GetItemName(ID) {
-	return ""; // TODO.
-}
+export function GetItemName(ID) { return (Items[ID] ? Items[ID]["name"] : "???"); };

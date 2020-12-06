@@ -24,10 +24,12 @@
 		  reasonable ways as different from the original version.
 */
 
+import { SavData } from '../utils/savutils.js';
+
 /*	Palette to display from.
 	Format is: R G B A.
 */
-const Palette = [
+export const Palette = [
 	0xFF0000FF, 0xFF7331FF, 0xFFAD00FF, 0xFFFF00FF, 0xADFF00FF, 0x52FF00FF, 0x00FF00FF, 0x00AD52FF, 0x0052ADFF, 0x0000FFFF, 0x5200FFFF, 0xAD00FFFF, 0xFF00FFFF, 0x000000FF, 0xFFFFFFFF,
 	0xFF7B7BFF, 0xFFB57BFF, 0xFFE77BFF, 0xFFFF7BFF, 0xDEFF7BFF, 0xADFF7BFF, 0x7BFF7BFF, 0x52AD84FF, 0x5284ADFF, 0x7B7BFFFF, 0xB57BFFFF, 0xE77BFFFF, 0xFF7BFFFF, 0x000000FF, 0xFFFFFFFF,
 	0xA50000FF, 0xA53100FF, 0xA57300FF, 0xA5A500FF, 0x73A500FF, 0x31A500FF, 0x00A500FF, 0x005221FF, 0x002152FF, 0x0000A5FF, 0x3100A5FF, 0x7300A5FF, 0xA500A5FF, 0x000000FF, 0xFFFFFFFF,
@@ -97,7 +99,7 @@ const PATTERN_KOR = {
 	PALETTE: 0x232 // uint8_t.
 };
 
-class Pattern {
+export class Pattern {
 	constructor(startoffs, region) {
 		this.region = region;
 		this.startPoint = startoffs;
@@ -165,7 +167,7 @@ class Pattern {
 	palette: The palette.
 	canvasID: The ID of the canvas to set to.
 */
-function PatternImageData(buff, palette, canvasID) {
+export function PatternImageData(buff, palette, canvasID) {
 	const element = document.getElementById(canvasID);
 	let context = element.getContext('2d');
 	const imageData = context.createImageData(32, 32);
@@ -185,7 +187,7 @@ function PatternImageData(buff, palette, canvasID) {
 
 	pattern: Pattern class.
 */
-function DecodePattern(pattern) {
+export function DecodePattern(pattern) {
 	let DecodedData = new Uint8ClampedArray(0x400); // Buffer.
 
 	for (let i = 0; i < 0x200; i++) {

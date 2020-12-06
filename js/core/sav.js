@@ -24,6 +24,11 @@
 		  reasonable ways as different from the original version.
 */
 
+import { SavData, memcpy } from '../utils/savutils.js';
+import { Player } from './player.js';
+import { Villager } from './villager.js';
+import { fixMainChecksum } from '../utils/checksum.js';
+
 const SAV_EUR = {
 	CHECKSUM_OFFSET: 0x15FDC,
 	SAVCOPY_OFFSET: 0x15FE0,
@@ -68,7 +73,7 @@ const SAV_KOR = {
 	VILLAGER_SIZE: 0x7EC
 };
 
-class Sav {
+export class Sav {
 	constructor(region) {
 		this.region = region; // 0: EUR, 1: USA, 2: JPN, 3: KOR.
 
@@ -93,6 +98,7 @@ class Sav {
 				this.data = null;
 		}
 	}
+
 
 	/*
 		Return a player.

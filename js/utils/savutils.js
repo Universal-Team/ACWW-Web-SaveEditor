@@ -24,9 +24,9 @@
 		  reasonable ways as different from the original version.
 */
 
-let RawData, SavData; // uint8 array + DataView.
+export let RawData, SavData; // uint8 array + DataView.
 let fileName; // Savefile name.
-let sav; // The Sav class.
+export let sav; // The Sav class.
 let saveSize; // Size of the Sav.
 
 /*
@@ -38,12 +38,17 @@ const InitStruct = {
 	ValidSizes: [ 0x40000, 0x4007A, 0x80000, 0x8007A ] // Valid Savesizes.
 };
 
+import { Test } from '../main.js';
+import { Sav } from '../core/sav.js';
+
+document.getElementById("savSelector").onchange = (e) => loadSav(e.target.files[0]); // Used to handle things after SavSelection.
+
 /*
 	Loads a Savefile.
 
 	savefile: The savefile to read from.
 */
-function loadSav(savefile) {
+export function loadSav(savefile) {
 	let good = false;
 
 	if (!savefile) {
@@ -78,7 +83,7 @@ function loadSav(savefile) {
 
 	SaveData: The buffer to detect from.
 */
-function DetectSavefile(SaveData) {
+export function DetectSavefile(SaveData) {
 	sav = null; // Reset to null first.
 
 	for (let i = 0; i < 4; i++) {
@@ -94,7 +99,7 @@ function DetectSavefile(SaveData) {
 
 	buffer: The buffer to load from.
 */
-function LoadData(buffer) {
+export function LoadData(buffer) {
 	RawData = new Uint8Array(buffer);
 	SavData = new DataView(RawData.buffer);
 	DetectSavefile(SavData); // Detect the savefile.
@@ -109,7 +114,7 @@ function LoadData(buffer) {
 /*
 	Lets you download the Savefile.
 */
-function SaveSav() {
+export function SaveSav() {
 	if (sav == null) return;
 
 	/* Fix checksum and copy to second Savcopy. */
@@ -133,7 +138,7 @@ function SaveSav() {
 	dstOffset: The startoffset of the destination buffer.
 	length: The length to copy.
 */
-function memcpy(src, srcOffset, dst, dstOffset, length) {
+export function memcpy(src, srcOffset, dst, dstOffset, length) {
 	for (let index = 0; index < length; index++) {
 		dst[dstOffset + index] = src[srcOffset + index];
 	}

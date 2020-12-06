@@ -24,12 +24,15 @@
 		  reasonable ways as different from the original version.
 */
 
+import { SavData } from '../utils/savutils.js';
+import { Pattern } from './pattern.js';
+import { Letter } from './letter.js';
+import Villagers from '../strings/en/villagers.js';
+
 const VILLAGER_EUR_USA = {
 	VILLAGER_SIZE: 0x700,
 	PATTERN: 0x340,
-	PATTERN_SIZE: 0x228,
 	LETTER: 0x568,
-	LETTER_SIZE: 0xF4,
 	FURNITURE: 0x6AC, // uint16_t, 10.
 	PERSONALITY: 0x6CA, // uint8_t.
 	ID: 0x6CB, // uint8_t, also known as Species.
@@ -42,9 +45,7 @@ const VILLAGER_EUR_USA = {
 const VILLAGER_JPN = {
 	VILLAGER_SIZE: 0x5C0,
 	PATTERN: 0x280,
-	PATTERN_SIZE: 0x220,
 	LETTER: 0x4A0,
-	LETTER_SIZE: 0x8C,
 	FURNITURE: 0x578, // uint16_t, 10.
 	PERSONALITY: 0x594, // uint8_t.
 	ID: 0x595, // uint8_t, also known as Species.
@@ -57,9 +58,7 @@ const VILLAGER_JPN = {
 const VILLAGER_KOR = {
 	VILLAGER_SIZE: 0x7EC,
 	PATTERN: 0x400,
-	PATTERN_SIZE: 0x234,
 	LETTER: 0x634,
-	LETTER_SIZE: 0x100,
 	FURNITURE: 0x78C, // uint16_t, 10.
 	PERSONALITY: 0x7AE, // uint8_t.
 	ID: 0x7AF, // uint8_t, also known as Species.
@@ -69,7 +68,7 @@ const VILLAGER_KOR = {
 	UMBRELLA: 0x7DA // uint8_t index.
 };
 
-class Villager {
+export class Villager {
 	constructor(startoffs, region) {
 		this.region = region;
 		this.startPoint = startoffs;
@@ -94,7 +93,12 @@ class Villager {
 		}
 	};
 
+
+	/* Get the Villager stored Pattern. */
 	GetPattern() { return new Pattern(this.startPoint + this.data.PATTERN, this.region); };
+
+	/* Get the Villager stored letter. */
+	GetLetter() { return new Letter(this.startPoint + this.data.LETTER, this.region); };
 
 	/* Villager Furnitures. 0 - 9. */
 	GetFurniture(slot) { return SavData.getUint16(this.startPoint + this.data.FURNITURE + (slot * 2), true); };
@@ -107,6 +111,9 @@ class Villager {
 	/* Villager ID, aka species. */
 	GetID() { return SavData.getUint8(this.startPoint + this.data.ID); };
 	SetID(v) { SavData.setUint8(this.startPoint + this.data.ID, v); };
+
+	/* Return the villager name. */
+	GetVillagerName() { return Villagers[this.GetID()]["name"]; };
 
 	/* Villager Shirt. */
 	GetShirt() { return SavData.getUint16(this.startPoint + this.data.SHIRT, true); };
@@ -123,4 +130,7 @@ class Villager {
 	/* Villager Umbrella. */
 	GetUmbrella() { return SavData.getUint8(this.startPoint + this.data.UMBRELLA); };
 	SetUmbrella(v) { SavData.setUint8(this.startPoint + this.data.UMBRELLA, v); };
+
+	/* Villager Exist? */
+	Exist() { return (Boolean)(this.GetID() != 0xFF); };
 };

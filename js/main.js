@@ -26,7 +26,18 @@
 
 let player, pattern, villager;
 
-function Test() {
+import Hairstyles from './strings/en/hairstyles.js';
+import Haircolors from './strings/en/haircolors.js';
+import Personalities from './strings/en/personalities.js';
+
+import { GetItemName } from './core/item.js';
+import { sav, RawData, SavData } from './utils/savutils.js';
+import { Player } from './core/player.js';
+import { Pattern, DecodePattern, PatternImageData } from './core/pattern.js';
+import { Villager } from './core/villager.js';
+import { Sav } from './core/sav.js';
+
+export function Test() {
 	player = sav.GetPlayer(0);
 	pattern = player.GetPattern(0);
 	villager = sav.GetVillager(0);
@@ -35,17 +46,19 @@ function Test() {
 	console.log("PLAYER");
 	console.log("Player Name: " + player.GetName());
 	console.log("Player ID: " + player.GetPlayerID());
-	console.log("Hairstyle: " + player.GetHairstyle());
-	console.log("Haircolor: " + player.GetHaircolor());
+	console.log("Hairstyle: " + Hairstyles[player.GetHairstyle()]);
+	console.log("Haircolor: " + Haircolors[player.GetHaircolor()]);
 	console.log("Wallet Amount: " + player.GetWallet());
 	console.log("Bank Amount: " + player.GetBank());
+	console.log("Pocket Slot 1: " + GetItemName(player.GetPocketItem(0)));
 
 	/* Log Villager info as test. */
 	console.log("VILLAGER");
+	console.log("Villager Exist: " + (villager.Exist() ? "Yes." : "No."));
 	console.log("Villager ID: " + villager.GetID());
-	console.log("Villager Personality: " + villager.GetPersonality());
-	console.log("Villager Shirt: " + villager.GetShirt());
-
+	console.log("Villager Name: " + villager.GetVillagerName());
+	console.log("Villager Personality: " + Personalities[villager.GetPersonality()]);
+	console.log("Villager Shirt: " + GetItemName(villager.GetShirt()));
 
 	/* Log Pattern info as test. */
 	console.log("PATTERN");

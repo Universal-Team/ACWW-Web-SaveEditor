@@ -24,6 +24,10 @@
 		  reasonable ways as different from the original version.
 */
 
+import { SavData } from '../utils/savutils.js';
+import { Pattern } from './pattern.js';
+import { Letter } from './letter.js';
+
 const PLAYER_EUR_USA = {
 	PLAYER_SIZE: 0x228C,
 	FACE_HAIRSTYLE: 0x223C, // uint8_t.
@@ -93,7 +97,7 @@ const PLAYER_KOR = {
 	BED: -1, // TODO.
 };
 
-class Player {
+export class Player {
 	constructor(startoffs, region, player) {
 		this.region = region;
 		this.startPoint = startoffs;
@@ -118,6 +122,7 @@ class Player {
 				this.data = null;
 		}
 	}
+
 
 	/* Player Face. */
 	GetFace() { return (SavData.getUint8(this.startPoint + this.data.FACE_HAIRSTYLE) & 0xF); };
@@ -164,7 +169,7 @@ class Player {
 	SetBank(v) { SavData.setUint32(this.startPoint + this.data.BANK_AMOUNT, v, true); };
 
 	/* Player Exist? */
-	PlayerExist() { return Boolean(this.GetPlayerID() != 0); };
+	Exist() { return Boolean(this.GetPlayerID() != 0); };
 
 	/* Pocket Items: 0 - 14. */
 	GetPocketItem(slot) { return SavData.getUint16(this.startPoint + this.data.POCKET + (slot * 2), true); };
@@ -176,4 +181,7 @@ class Player {
 
 	/* Pattern. 0 - 7. */
 	GetPattern(slot) { return new Pattern(this.startPoint + this.data.PATTERN + (slot * this.data.PATTERN_SIZE), this.region); };
+
+	/* Get Pocket Letters. 0 - 9. */
+	GetPocketLetter(slot) { return new Letter(this.startoffs + this.data.LETTER + (slot * this.data.LETTER_SIZE), this.region); };
 };
