@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,maximum-scale=2">
+	<title> ACWW Web SaveEditor </title>
+	<link rel="stylesheet" href="css/main.css">
+
+	<script src="js/core/item.js"></script>
+	<script src="js/core/pattern.js"></script>
+	<script src="js/core/player.js"></script>
+	<script src="js/core/sav.js"></script>
+	<script src="js/core/villager.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/utils/checksum.js"></script>
+	<script src="js/utils/encoding.js"></script>
+	<script src="js/utils/savutils.js"></script>
+</head>
+
+<body>
+	<main>
+		<h3>Select your Savefile</h3>
+		<input class="form-file-input" id="savSelector" type="file" accept=".sav" onchange="loadSav(this.files[0])">
+		<canvas id="TestCanvas"></canvas>
+	</main>
+</body>
+</html>
