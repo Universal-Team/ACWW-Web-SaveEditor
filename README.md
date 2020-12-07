@@ -1,7 +1,7 @@
 # ACWW-Web-SaveEditor
 A work in progress Animal Crossing: Wild World Web Save Editor made in JavaScript and HTML.
 
-If you want an on console Animal Crossing: Wild World Save Editor.. i'd suggest to look for [WildEdit](https://github.com/Universal-Team/WildEdit) (on a DS(i)) or [LeafEdit](https://github.com/Universal-Team/LeafEdit) (on a 3DS).
+If you look for an on console Animal Crossing: Wild World Save Editor.. we'd suggest to look for [WildEdit](https://github.com/Universal-Team/WildEdit) (on a DS(i)) or [LeafEdit](https://github.com/Universal-Team/LeafEdit) (on a 3DS).
 
 ## Building
 To test the site locally install Jekyll by running:
@@ -19,5 +19,4 @@ bundle exec jekyll serve
 
 ## Credits
 - [ACWW_Research](https://github.com/SuperSaiyajinStackZ/ACWW_Research): For research progress, helpful for the core.
-
-- [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ): Main Developer of ACWW-Web-SaveEditor.
+- [Universal-Team](https://github.com/Universal-Team): For creating this.
