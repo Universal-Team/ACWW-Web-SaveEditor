@@ -24,6 +24,7 @@
 		  reasonable ways as different from the original version.
 */
 
+import { ReadString, SetString } from '../utils/encoding.js';
 import { SavData } from '../utils/savutils.js';
 import { Pattern } from './pattern.js';
 import { Letter } from './letter.js';
@@ -126,31 +127,31 @@ export class Player {
 
 	/* Player Face. */
 	GetFace() { return (SavData.getUint8(this.startPoint + this.data.FACE_HAIRSTYLE) & 0xF); };
-	SetFace(v) { SavData.setUint8(this.startPoint + this.data.FACE_HAIRSTYLE, (this.GetFace() & 0xF0) | (v & 0xF)); };
+	SetFace(v) { SavData.setUint8(this.startPoint + this.data.FACE_HAIRSTYLE, (this.GetFace() & 0xF0) | (Math.min(15, v) & 0xF)); };
 
 	/* Player Tan. */
 	GetTan() { return (SavData.getUint8(this.startPoint + this.data.TAN_HAIRCOLOR) >> 4); };
-	SetTan(v) { SavData.setUint8(this.startPoint + this.data.TAN_HAIRCOLOR, (this.GetTan() & 0x0F) | (v << 4)); };
+	SetTan(v) { SavData.setUint8(this.startPoint + this.data.TAN_HAIRCOLOR, (this.GetTan() & 0x0F) | (Math.min(3, v) << 4)); };
 
 	/* Player Hairstyle. */
 	GetHairstyle() { return (SavData.getUint8(this.startPoint + this.data.FACE_HAIRSTYLE) >> 4); };
-	SetHairstyle(v) { SavData.setUint8(this.startPoint + this.data.FACE_HAIRSTYLE, ((this.GetHairstyle() & 0x0F) | (v << 4))); };
+	SetHairstyle(v) { SavData.setUint8(this.startPoint + this.data.FACE_HAIRSTYLE, ((this.GetHairstyle() & 0x0F) | (Math.min(15, v) << 4))); };
 
 	/* Player Haircolor. */
 	GetHaircolor() { return (SavData.getUint8(this.startPoint + this.data.TAN_HAIRCOLOR) & 0xF); };
-	SetHaircolor(v) { SavData.setUint8(this.startPoint + this.data.TAN_HAIRCOLOR, ((this.GetHaircolor() & 0xF0) | (v & 0xF))); };
+	SetHaircolor(v) { SavData.setUint8(this.startPoint + this.data.TAN_HAIRCOLOR, ((this.GetHaircolor() & 0xF0) | (Math.min(7, v) & 0xF))); };
 
 	/* Player Gender. */
 	GetGender() { return SavData.getUint8(this.startPoint + this.data.GENDER); };
-	SetGender(v) { SavData.setUint8(this.startPoint + this.data.GENDER, v); };
+	SetGender(v) { SavData.setUint8(this.startPoint + this.data.GENDER, Math.min(1, v)); };
 
 	/* Player ID. */
 	GetPlayerID() { return SavData.getUint16(this.startPoint + this.data.PLAYER_ID, true); };
-	SetPlayerID(v) { SavData.setUint16(this.startPoint + this.data.PLAYER_ID, v, true); };
+	SetPlayerID(v) { SavData.setUint16(this.startPoint + this.data.PLAYER_ID, Math.min(65535, v), true); };
 
 	/* Player Town ID. */
 	GetTownID() { return SavData.getUint16(this.startPoint + this.data.TOWN_ID, true); };
-	SetTownID(v) { SavData.setUint16(this.startPoint + this.data.TOWN_ID, v, true); };
+	SetTownID(v) { SavData.setUint16(this.startPoint + this.data.TOWN_ID, Math.min(65535, v), true); };
 
 	/* Player Town Name. */
 	GetTownName() { return ReadString(SavData, this.startPoint + this.data.TOWN_NAME, this.data.TOWN_SIZE, (this.region == 2), (this.region == 3)); };
@@ -162,26 +163,26 @@ export class Player {
 
 	/* Player Wallet. */
 	GetWallet() { return SavData.getUint32(this.startPoint + this.data.WALLET_AMOUNT, true); };
-	SetWallet(v) { SavData.setUint32(this.startPoint + this.data.WALLET_AMOUNT, v, true); };
+	SetWallet(v) { SavData.setUint32(this.startPoint + this.data.WALLET_AMOUNT, Math.min(99999, v), true); };
 
 	/* Player Bank. */
 	GetBank() { return SavData.getUint32(this.startPoint + this.data.BANK_AMOUNT, true); };
-	SetBank(v) { SavData.setUint32(this.startPoint + this.data.BANK_AMOUNT, v, true); };
+	SetBank(v) { SavData.setUint32(this.startPoint + this.data.BANK_AMOUNT, Math.min(999999999, v), true); };
 
 	/* Player Exist? */
-	Exist() { return Boolean(this.GetPlayerID() != 0); };
+	Exist() { return this.GetPlayerID() != 0; };
 
 	/* Pocket Items: 0 - 14. */
-	GetPocketItem(slot) { return SavData.getUint16(this.startPoint + this.data.POCKET + (slot * 2), true); };
-	SetPocketItem(slot, v) { SavData.setUint16(this.startPoint + this.data.POCKET + (slot * 2), v, true); };
+	GetPocketItem(slot) { return SavData.getUint16(this.startPoint + this.data.POCKET + (Math.min(14, slot) * 2), true); };
+	SetPocketItem(slot, v) { SavData.setUint16(this.startPoint + this.data.POCKET + (Math.min(14, slot) * 2), v, true); };
 
 	/* Dresser Items: 0 - 89. */
-	GetDresserItem(slot) { return SavData.getUint16(this.data.DRESSER + (0xB4 * this.playerIndex) + slot * 2, true); };
-	SetDresserItem(slot, v) { SavData.setUint16(this.data.DRESSER + (0xB4 * this.playerIndex) + slot * 2, v, true); };
+	GetDresserItem(slot) { return SavData.getUint16(this.data.DRESSER + (0xB4 * this.playerIndex) + Math.min(89, slot) * 2, true); };
+	SetDresserItem(slot, v) { SavData.setUint16(this.data.DRESSER + (0xB4 * this.playerIndex) + Math.min(89, slot) * 2, v, true); };
 
 	/* Pattern. 0 - 7. */
-	GetPattern(slot) { return new Pattern(this.startPoint + this.data.PATTERN + (slot * this.data.PATTERN_SIZE), this.region); };
+	GetPattern(slot) { return new Pattern(this.startPoint + this.data.PATTERN + (Math.min(7, slot) * this.data.PATTERN_SIZE), this.region); };
 
 	/* Get Pocket Letters. 0 - 9. */
-	GetPocketLetter(slot) { return new Letter(this.startoffs + this.data.LETTER + (slot * this.data.LETTER_SIZE), this.region); };
+	GetPocketLetter(slot) { return new Letter(this.startoffs + this.data.LETTER + (Math.min(9, slot) * this.data.LETTER_SIZE), this.region); };
 };

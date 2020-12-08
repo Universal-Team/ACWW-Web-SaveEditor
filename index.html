@@ -13,17 +13,97 @@
 	<script type="module" src="js/core/player.js"></script>
 	<script type="module" src="js/core/sav.js"></script>
 	<script type="module" src="js/core/villager.js"></script>
+	<script type="module" src ="js/editor/playerEditor.js"></script>
+	<script type="module" src="js/editor/villagerEditor.js"></script>
 	<script type="module" src="js/main.js"></script>
 	<script type="module" src="js/utils/checksum.js"></script>
-	<script src="js/utils/encoding.js"></script>
+	<script type="module" src="js/utils/encoding.js"></script>
 	<script type="module" src="js/utils/savutils.js"></script>
 </head>
 
 <body>
 	<main>
-		<h3>Select your Savefile</h3>
-		<input class="form-file-input" id="savSelector" type="file" accept=".sav">
-		<canvas id="TestCanvas"></canvas>
+		<!-- The Sav Selector. -->
+		<div id="SavLoader">
+			<h3>Select your Savefile</h3>
+			<input class="form-file-input" id="savSelector" type="file" accept=".sav">
+		</div>
+
+		<!-- Menu Tabs, including Item list. -->
+		<div id="Menu-Tabs" class="d-none">
+			<button id="Player-Tab" class="selectedTab">Players</button>
+			<button id="Villager-Tab" class="btnTabs">Villagers</button>
+			<button id="SaveChanges" class="btnTabs">Save Changes</button>
+
+			<br></br>
+			<label for="ItemList">Selected Temp Item:</label> <select id="ItemList"></select>
+		</div>
+
+		<!-- Player Editor. -->
+		<div id="PlayerEditor" class="d-none">
+			<br></br>
+			<button id="Player 0">Player 1</button>
+			<button id="Player 1">Player 2</button>
+			<button id="Player 2">Player 3</button>
+			<button id="Player 3">Player 4</button>
+
+			<h3> Player Info </h3>
+			<table>
+				<tr>
+					<td>Player Name: <input type="text" id="PlayerName"></td>
+				</tr>
+				<tr>
+					<td>Wallet Amount: <input type="number" min="0" max="99999" id="WalletAmount">
+						<button id="MinWallet">min</button> <button id="MaxWallet">max</button>
+					</td>
+				</tr>
+				<tr>
+					<td>Bank Amount: <input type="number" min="0" max="999999999" id="BankAmount">
+						<button id="MinBank">min</button> <button id="MaxBank">max</button>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="Facetype">Facetype:</label> <select id="Facetype"></select></td>
+				</tr>
+				<tr>
+					<td><label for="Hairstyle">Hairstyle:</label> <select id="Hairstyle"></select></td>
+				</tr>
+				<tr>
+					<td><label for="Haircolor">Haircolor:</label> <select id="Haircolor"></select></td>
+				</tr>
+				<tr>
+					<td><label for="Tan">Tan:</label> <select id= "Tan"></select></td>
+				</tr>
+			</table>
+
+			<!-- Player Pattern. -->
+			<h3>Player Pattern</h3>
+			<div class="column">
+				<div id="Player-Pattern"></div>
+			</div>
+		</div>
+
+		<!-- Villager Editor. -->
+		<div id="VillagerEditor" class="d-none">
+			<br></br>
+			<button id="Villager 0">Villager 1</button>
+			<button id="Villager 1">Villager 2</button>
+			<button id="Villager 2">Villager 3</button>
+			<button id="Villager 3">Villager 4</button>
+			<button id="Villager 4">Villager 5</button>
+			<button id="Villager 5">Villager 6</button>
+			<button id="Villager 6">Villager 7</button>
+			<button id="Villager 7">Villager 8</button>
+
+			<h3> Villager Info </h3>
+			<table>
+				<tr>
+					<td><label for="Villager Species">Species:</label> <select id="Villager Species"></select></td>
+				</tr>
+			</table>
+		</div>
+
+	<!-- End. -->
 	</main>
 </body>
 </html>

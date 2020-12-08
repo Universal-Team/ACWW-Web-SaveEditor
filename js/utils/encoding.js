@@ -175,7 +175,7 @@ function SetUTF16(buffer, offset, length, str) {
 	isJPN: If it's Japanese or not.
 	isKOR: If it's Korean or not.
 */
-function ReadString(buffer, offset, length, isJPN, isKOR) {
+export function ReadString(buffer, offset, length, isJPN, isKOR) {
 	if (isKOR) return ReadUTF16(buffer, offset, length);
 
 	return WWToString(buffer, offset, length, isJPN);
@@ -191,7 +191,7 @@ function ReadString(buffer, offset, length, isJPN, isKOR) {
 	isKOR: If it's Korean or not.
 	str: The string.
 */
-function SetString(buffer, offset, length, isJPN, isKOR, str) {
+export function SetString(buffer, offset, length, isJPN, isKOR, str) {
 	if (isKOR) SetUTF16(buffer, offset, length, str);
 	else StringToWW(buffer, offset, length, isJPN, str);
 }

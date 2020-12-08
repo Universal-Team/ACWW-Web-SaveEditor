@@ -38,7 +38,8 @@ const InitStruct = {
 	ValidSizes: [ 0x40000, 0x4007A, 0x80000, 0x8007A ] // Valid Savesizes.
 };
 
-import { Test } from '../main.js';
+import { InitializeMainEditor } from '../main.js';
+import { LoadPlayer } from '../editor/playerEditor.js';
 import { Sav } from '../core/sav.js';
 
 document.getElementById("savSelector").onchange = (e) => loadSav(e.target.files[0]); // Used to handle things after SavSelection.
@@ -106,8 +107,7 @@ export function LoadData(buffer) {
 
 	if (sav != null) {
 		sav.PrintRegion();
-
-		Test(); // Execute the Test function too from main.js.
+		InitializeMainEditor();
 	}
 }
 

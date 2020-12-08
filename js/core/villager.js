@@ -24,10 +24,10 @@
 		  reasonable ways as different from the original version.
 */
 
+import { ReadString, SetString } from '../utils/encoding.js';
 import { SavData } from '../utils/savutils.js';
 import { Pattern } from './pattern.js';
 import { Letter } from './letter.js';
-import Villagers from '../strings/en/villagers.js';
 
 const VILLAGER_EUR_USA = {
 	VILLAGER_SIZE: 0x700,
@@ -101,19 +101,16 @@ export class Villager {
 	GetLetter() { return new Letter(this.startPoint + this.data.LETTER, this.region); };
 
 	/* Villager Furnitures. 0 - 9. */
-	GetFurniture(slot) { return SavData.getUint16(this.startPoint + this.data.FURNITURE + (slot * 2), true); };
-	SetFurniture(slot, v) { SavData.setUint16(this.startPoint + this.data.FURNITURE + (slot * 2), v, true); };
+	GetFurniture(slot) { return SavData.getUint16(this.startPoint + this.data.FURNITURE + (Math.min(9, slot) * 2), true); };
+	SetFurniture(slot, v) { SavData.setUint16(this.startPoint + this.data.FURNITURE + (Math.min(9, slot) * 2), v, true); };
 
 	/* Villager Personality. */
 	GetPersonality() { return SavData.getUint8(this.startPoint + this.data.PERSONALITY); };
-	SetPersonality(v) { SavData.setUint8(this.startPoint + this.data.PERSONALITY, v); };
+	SetPersonality(v) { SavData.setUint8(this.startPoint + this.data.PERSONALITY, Math.min(6, v)); };
 
 	/* Villager ID, aka species. */
 	GetID() { return SavData.getUint8(this.startPoint + this.data.ID); };
-	SetID(v) { SavData.setUint8(this.startPoint + this.data.ID, v); };
-
-	/* Return the villager name. */
-	GetVillagerName() { return Villagers[this.GetID()]["name"]; };
+	SetID(v) { SavData.setUint8(this.startPoint + this.data.ID, Math.min(255, v)); };
 
 	/* Villager Shirt. */
 	GetShirt() { return SavData.getUint16(this.startPoint + this.data.SHIRT, true); };
@@ -132,5 +129,5 @@ export class Villager {
 	SetUmbrella(v) { SavData.setUint8(this.startPoint + this.data.UMBRELLA, v); };
 
 	/* Villager Exist? */
-	Exist() { return (Boolean)(this.GetID() != 0xFF); };
+	Exist() { return this.GetID() != 0xFF; };
 };

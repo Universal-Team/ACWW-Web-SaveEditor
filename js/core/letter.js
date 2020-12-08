@@ -24,6 +24,7 @@
 		  reasonable ways as different from the original version.
 */
 
+import { ReadString, SetString } from '../utils/encoding.js';
 import { SavData } from '../utils/savutils.js';
 
 const LETTER_EUR_USA = {
@@ -137,7 +138,7 @@ export class Letter {
 
 	/* Receiver Town ID. */
 	GetReceiverTownID() { return SavData.getUint16(this.startPoint + this.data.TOWNID_RECEIVER, true); };
-	SetReceiverTownID(v) { SavData.setUint16(this.startPoint + this.data.TOWNID_RECEIVER, v, true); };
+	SetReceiverTownID(v) { SavData.setUint16(this.startPoint + this.data.TOWNID_RECEIVER, Math.min(65535, v), true); };
 
 	/* Receiver Town Name. */
 	GetReceiverTownName() { return ReadString(SavData, this.startPoint + this.data.TOWNNAME_RECEIVER, this.data.TOWNNAME_LENGTH, (this.region == 2), (this.region == 3)); };
@@ -145,7 +146,7 @@ export class Letter {
 
 	/* Receiver Player ID. */
 	GetReceiverPlayerID() { return SavData.getUint16(this.startPoint + this.data.PLAYERID_RECEIVER, true); };
-	SetReceiverPlayerID(v) { SavData.setUint16(this.startPoint + this.data.PLAYERID_RECEIVER, v, true); };
+	SetReceiverPlayerID(v) { SavData.setUint16(this.startPoint + this.data.PLAYERID_RECEIVER, Math.min(65535, v), true); };
 
 	/* Receiver Player Name. */
 	GetReceiverPlayerName() { return ReadString(SavData, this.startPoint + this.data.PLAYERNAME_RECEIVER, this.data.PLAYERNAME_LENGTH, (this.region == 2), (this.region == 3)); };
@@ -154,7 +155,7 @@ export class Letter {
 
 	/* Sender Town ID. */
 	GetSenderTownID() { return SavData.getUint16(this.startPoint + this.data.TOWNID_SENDER, true); };
-	SetSenderTownID(v) { SavData.setUint16(this.startPoint + this.data.TOWNID_SENDER, v, true); };
+	SetSenderTownID(v) { SavData.setUint16(this.startPoint + this.data.TOWNID_SENDER, Math.min(65535, v), true); };
 
 	/* Sender Town Name. */
 	GetSenderTownName() { return ReadString(SavData, this.startPoint + this.data.TOWNNAME_SENDER, this.data.TOWNNAME_LENGTH, (this.region == 2), (this.region == 3)); };
@@ -162,7 +163,7 @@ export class Letter {
 
 	/* Sender Player ID. */
 	GetSenderPlayerID() { return SavData.getUint16(this.startPoint + this.data.PLAYERID_SENDER, true); };
-	SetSenderPlayerID(v) { SavData.setUint16(this.startPoint + this.data.PLAYERID_SENDER, v, true); };
+	SetSenderPlayerID(v) { SavData.setUint16(this.startPoint + this.data.PLAYERID_SENDER, Math.min(65535, v), true); };
 
 	/* Sender Player Name. */
 	GetSenderPlayerName() { return ReadString(SavData, this.startPoint + this.data.PLAYERNAME_SENDER, this.data.PLAYERNAME_LENGTH, (this.region == 2), (this.region == 3)); };
@@ -184,11 +185,11 @@ export class Letter {
 
 	/* Intro name index. */
 	GetIntroIndex() { return SavData.getUint8(this.startPoint + this.data.INTRO_INDEX); };
-	SetIntroIndex(v) { SavData.setUint8(this.startPoint + this.data.INTRO_INDEX, v); };
+	SetIntroIndex(v) { SavData.setUint8(this.startPoint + this.data.INTRO_INDEX, v); }; // TODO: Max pos?
 
 	/* Paper ID. */
 	GetPaperID() { return SavData.getUint8(this.startPoint + this.data.PAPER_ID); };
-	SePaperID(v) { SavData.setUint8(this.startPoint + this.data.PAPER_ID, v); };
+	SePaperID(v) { SavData.setUint8(this.startPoint + this.data.PAPER_ID, Math.min(0x3F, v)); };
 
 	/* Letter Flags. */
 	GetFlags() { return SavData.getUint8(this.startPoint + this.data.FLAGS); };

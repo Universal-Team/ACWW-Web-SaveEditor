@@ -24,28 +24,29 @@
 		  reasonable ways as different from the original version.
 */
 
+import { ReadString, SetString } from '../utils/encoding.js';
 import { SavData } from '../utils/savutils.js';
 
 /*	Palette to display from.
-	Format is: R G B A.
+	Format is: R G B.
 */
 export const Palette = [
-	0xFF0000FF, 0xFF7331FF, 0xFFAD00FF, 0xFFFF00FF, 0xADFF00FF, 0x52FF00FF, 0x00FF00FF, 0x00AD52FF, 0x0052ADFF, 0x0000FFFF, 0x5200FFFF, 0xAD00FFFF, 0xFF00FFFF, 0x000000FF, 0xFFFFFFFF,
-	0xFF7B7BFF, 0xFFB57BFF, 0xFFE77BFF, 0xFFFF7BFF, 0xDEFF7BFF, 0xADFF7BFF, 0x7BFF7BFF, 0x52AD84FF, 0x5284ADFF, 0x7B7BFFFF, 0xB57BFFFF, 0xE77BFFFF, 0xFF7BFFFF, 0x000000FF, 0xFFFFFFFF,
-	0xA50000FF, 0xA53100FF, 0xA57300FF, 0xA5A500FF, 0x73A500FF, 0x31A500FF, 0x00A500FF, 0x005221FF, 0x002152FF, 0x0000A5FF, 0x3100A5FF, 0x7300A5FF, 0xA500A5FF, 0x000000FF, 0xFFFFFFFF,
-	0x009C00FF, 0x5ACE6BFF, 0xB5FFDEFF, 0x009C6BFF, 0x52CEA5FF, 0xADFFD6FF, 0x0052ADFF, 0x2984D6FF, 0x5AADFFFF, 0x0000FFFF, 0x4A6BFFFF, 0x314ADEFF, 0x1821B5FF, 0x00008CFF, 0xFFFFFFFF,
-	0xAD7300FF, 0xD6AD42FF, 0xFFDE8CFF, 0xFF0839FF, 0xFF4A6BFF, 0xFF949CFF, 0xAD00FFFF, 0xD663FFFF, 0xFFCEFFFF, 0xFFBD9CFF, 0xDE9473FF, 0xBD634AFF, 0x9C3921FF, 0x7B1000FF, 0xFFFFFFFF,
-	0xFF0000FF, 0xFF5200FF, 0xFFB55AFF, 0xFFEFADFF, 0x7B1000FF, 0xA54A31FF, 0xD6846BFF, 0xFFBD9CFF, 0x5AADFFFF, 0x84C6FFFF, 0xADE7FFFF, 0xD6FFFFFF, 0x6B6B6BFF, 0x000000FF, 0xFFFFFFFF,
-	0x00FF00FF, 0x42FF42FF, 0x8CFF8CFF, 0xD6FFD6FF, 0x0000FFFF, 0x4242FFFF, 0x8C8CFFFF, 0xD6D6FFFF, 0xFF0000FF, 0xFF4242FF, 0xFF8C8CFF, 0xFFD6D6FF, 0x6B6B6BFF, 0x000000FF, 0xFFFFFFFF,
-	0x003100FF, 0x426342FF, 0x849C84FF, 0xC6D6C6FF, 0x7B1000FF, 0xA54A29FF, 0xD68C5AFF, 0xFFC68CFF, 0xD6B500FF, 0xE7CE39FF, 0xF7DE7BFF, 0xFFF7BDFF, 0x6B6B6BFF, 0x000000FF, 0xFFFFFFFF,
-	0x0000FFFF, 0xFF0000FF, 0xFFFF00FF, 0x4242FFFF, 0xFF4242FF, 0xFFFF42FF, 0x8C8CFFFF, 0xFF8C8CFF, 0xFFFF8CFF, 0xD6D6FFFF, 0xFFD6D6FF, 0xFFFFD6FF, 0x6B6B6BFF, 0x000000FF, 0xFFFFFFFF,
-	0x00FF00FF, 0x0000FFFF, 0xFF00FFFF, 0x42FF42FF, 0x4242FFFF, 0xFF42FFFF, 0x8CFF8CFF, 0x8C8CFFFF, 0xFF8CFFFF, 0xD6FFD6FF, 0xD6D6FFFF, 0xFFD6FFFF, 0x6B6B6BFF, 0x000000FF, 0xFFFFFFFF,
-	0xFF0000FF, 0xFF7B00FF, 0xFFFF00FF, 0x84FF00FF, 0x00FF00FF, 0x00847BFF, 0x0000FFFF, 0x7B00FFFF, 0xFF94FFFF, 0xD6B500FF, 0xBD1000FF, 0x5A1000FF, 0x6B6B6BFF, 0x000000FF, 0xFFFFFFFF,
-	0x109463FF, 0x087B52FF, 0x108C39FF, 0x319C31FF, 0xCEA54AFF, 0xCE9439FF, 0xBD8C4AFF, 0xD68C31FF, 0xAD734AFF, 0x8C5A31FF, 0x6B4229FF, 0x84EFFFFF, 0x31CEEFFF, 0x00A5C6FF, 0xFFFFFFFF,
-	0xD6DEE7FF, 0xB5CEDEFF, 0xE7EFEFFF, 0xF7F7F7FF, 0x84737BFF, 0x948C6BFF, 0x847B63FF, 0x9C845AFF, 0x739CB5FF, 0xFF2929FF, 0xFFFF00FF, 0x9421FFFF, 0x009CBDFF, 0x000000FF, 0xFFFFFFFF,
-	0xFFFFFFFF, 0xF7EFEFFF, 0xE7DEDEFF, 0xD6CECEFF, 0xC6B5B5FF, 0xB5A5A5FF, 0xA59494FF, 0x9C8484FF, 0x8C6B6BFF, 0x7B5A5AFF, 0x6B4A4AFF, 0x5A3131FF, 0x4A2121FF, 0x421010FF, 0x310000FF,
-	0xFFFFFFFF, 0xEFEFEFFF, 0xDEDEDEFF, 0xCECECEFF, 0xB5B5B5FF, 0xA5A5A5FF, 0x949494FF, 0x848484FF, 0x6B6B6BFF, 0x5A5A5AFF, 0x4A4A4AFF, 0x313131FF, 0x212121FF, 0x101010FF, 0x000000FF,
-	0xFF8C7BFF, 0xFF0000FF, 0xFF7B00FF, 0xFFFF00FF, 0x008400FF, 0x00FF00FF, 0x0000FFFF, 0x009CFFFF, 0xD600FFFF, 0xFF6BFFFF, 0x9C0000FF, 0xFF9400FF, 0xFFBD94FF, 0x000000FF, 0xFFFFFFFF
+	"FF0000", "FF7331", "FFAD00", "FFFF00", "ADFF00", "52FF00", "00FF00", "00AD52", "0052AD", "0000FF", "5200FF", "AD00FF", "FF00FF", "000000", "FFFFFF",
+	"FF7B7B", "FFB57B", "FFE77B", "FFFF7B", "DEFF7B", "ADFF7B", "7BFF7B", "52AD84", "5284AD", "7B7BFF", "B57BFF", "E77BFF", "FF7BFF", "000000", "FFFFFF",
+	"A50000", "A53100", "A57300", "A5A500", "73A500", "31A500", "00A500", "005221", "002152", "0000A5", "3100A5", "7300A5", "A500A5", "000000", "FFFFFF",
+	"009C00", "5ACE6B", "B5FFDE", "009C6B", "52CEA5", "ADFFD6", "0052AD", "2984D6", "5AADFF", "0000FF", "4A6BFF", "314ADE", "1821B5", "00008C", "FFFFFF",
+	"AD7300", "D6AD42", "FFDE8C", "FF0839", "FF4A6B", "FF949C", "AD00FF", "D663FF", "FFCEFF", "FFBD9C", "DE9473", "BD634A", "9C3921", "7B1000", "FFFFFF",
+	"FF0000", "FF5200", "FFB55A", "FFEFAD", "7B1000", "A54A31", "D6846B", "FFBD9C", "5AADFF", "84C6FF", "ADE7FF", "D6FFFF", "6B6B6B", "000000", "FFFFFF",
+	"00FF00", "42FF42", "8CFF8C", "D6FFD6", "0000FF", "4242FF", "8C8CFF", "D6D6FF", "FF0000", "FF4242", "FF8C8C", "FFD6D6", "6B6B6B", "000000", "FFFFFF",
+	"003100", "426342", "849C84", "C6D6C6", "7B1000", "A54A29", "D68C5A", "FFC68C", "D6B500", "E7CE39", "F7DE7B", "FFF7BD", "6B6B6B", "000000", "FFFFFF",
+	"0000FF", "FF0000", "FFFF00", "4242FF", "FF4242", "FFFF42", "8C8CFF", "FF8C8C", "FFFF8C", "D6D6FF", "FFD6D6", "FFFFD6", "6B6B6B", "000000", "FFFFFF",
+	"00FF00", "0000FF", "FF00FF", "42FF42", "4242FF", "FF42FF", "8CFF8C", "8C8CFF", "FF8CFF", "D6FFD6", "D6D6FF", "FFD6FF", "6B6B6B", "000000", "FFFFFF",
+	"FF0000", "FF7B00", "FFFF00", "84FF00", "00FF00", "00847B", "0000FF", "7B00FF", "FF94FF", "D6B500", "BD1000", "5A1000", "6B6B6B", "000000", "FFFFFF",
+	"109463", "087B52", "108C39", "319C31", "CEA54A", "CE9439", "BD8C4A", "D68C31", "AD734A", "8C5A31", "6B4229", "84EFFF", "31CEEF", "00A5C6", "FFFFFF",
+	"D6DEE7", "B5CEDE", "E7EFEF", "F7F7F7", "84737B", "948C6B", "847B63", "9C845A", "739CB5", "FF2929", "FFFF00", "9421FF", "009CBD", "000000", "FFFFFF",
+	"FFFFFF", "F7EFEF", "E7DEDE", "D6CECE", "C6B5B5", "B5A5A5", "A59494", "9C8484", "8C6B6B", "7B5A5A", "6B4A4A", "5A3131", "4A2121", "421010", "310000",
+	"FFFFFF", "EFEFEF", "DEDEDE", "CECECE", "B5B5B5", "A5A5A5", "949494", "848484", "6B6B6B", "5A5A5A", "4A4A4A", "313131", "212121", "101010", "000000",
+	"FF8C7B", "FF0000", "FF7B00", "FFFF00", "008400", "00FF00", "0000FF", "009CFF", "D600FF", "FF6BFF", "9C0000", "FF9400", "FFBD94", "000000", "FFFFFF"
 ];
 
 const PATTERN_EUR_USA = {
@@ -104,6 +105,11 @@ export class Pattern {
 		this.region = region;
 		this.startPoint = startoffs;
 
+		/* Create Canvas. */
+		this.image = document.createElement('canvas');
+		this.image.width = 32; // Default size.
+		this.image.height = 32; // Default size.
+
 		/* Set proper data offsets. */
 		switch(this.region) {
 			case 0:
@@ -122,10 +128,27 @@ export class Pattern {
 			default:
 				this.data = null;
 		}
+
+		if (this.data) this.Refresh();
 	}
 
-	/* Returns a Pattern Image. */
-	GetImageData(offs) { return SavData.getUint8(this.startPoint + offs); };
+
+	/* Refresh the Image. */
+	Refresh() {
+		this.imageContext = this.image.getContext('2d');
+
+		for (let y = 0; y < 32; y++) {
+			for (let x = 0; x < 16; x++) {
+				let TwoPixels = SavData.getUint8(this.startPoint + (y * 16) + x);
+
+				this.imageContext.fillStyle = "#" + Palette[Math.max(0, (TwoPixels & 0x0F) - 1) + (this.GetPalette() * 15)];
+				this.imageContext.fillRect(x * 2, y, 1, 1);
+
+				this.imageContext.fillStyle = "#" + Palette[Math.max(0, ((TwoPixels & 0xF0) >> 4) - 1) + (this.GetPalette() * 15)];
+				this.imageContext.fillRect(x * 2 + 1, y, 1, 1);
+			}
+		}
+	}
 
 	/* Pattern Name. */
 	GetName() { return ReadString(SavData, this.startPoint + this.data.NAME, this.data.NAME_SIZE, (this.region == 2), (this.region == 3)); };
@@ -133,7 +156,7 @@ export class Pattern {
 
 	/* Player Creator ID. */
 	GetCreatorID() { return SavData.getUint16(this.startPoint + this.data.CREATOR_ID, true); };
-	SetCreatorID(v) { SavData.setUint16(this.startPoint + this.data.CREATOR_ID, v, true); };
+	SetCreatorID(v) { SavData.setUint16(this.startPoint + this.data.CREATOR_ID, Math.min(65535, v), true); };
 
 	/* Player Creator Name. */
 	GetCreatorName() { return ReadString(SavData, this.startPoint + this.data.CREATOR_NAME, this.data.CREATOR_NAME_SIZE, (this.region == 2), (this.region == 3)); };
@@ -141,11 +164,11 @@ export class Pattern {
 
 	/* Player Creator Gender. */
 	GetCreatorGender() { return SavData.getUint8(this.startPoint + this.data.CREATOR_GENDER); };
-	SetCreatorGender(v) { SavData.setUint8(this.startPoint + this.data.CREATOR_GENDER, v); };
+	SetCreatorGender(v) { SavData.setUint8(this.startPoint + this.data.CREATOR_GENDER, Math.min(1, v)); };
 
 	/* Origin Town ID. */
 	GetOriginTownID() { return SavData.getUint16(this.startPoint + this.data.ORIG_TOWN_ID, true); };
-	SetOriginTownID(v) { SavData.setUint16(this.startPoint + this.data.ORIG_TOWN_ID, v, true); };
+	SetOriginTownID(v) { SavData.setUint16(this.startPoint + this.data.ORIG_TOWN_ID, Math.min(65535, v), true); };
 
 	/* Origin Town Name. */
 	GetOriginTownName() { return ReadString(SavData, this.startPoint + this.data.ORIG_TOWN_NAME, this.data.ORIG_TOWN_NAME_SIZE, (this.region == 2), (this.region == 3)); };
@@ -153,47 +176,33 @@ export class Pattern {
 
 	/* Designtype: 9 is often the default. */
 	GetDesignType() { return SavData.getUint8(this.startPoint + this.data.DESIGNTYPE) & 0x0F; };
-	SetDesignType(v) { SavData.setUint8(this.startPoint + this.data.DESIGNTYPE, (this.GetDesignType() & 0xF0) | (v & 0x0F)); };
+	SetDesignType(v) { SavData.setUint8(this.startPoint + this.data.DESIGNTYPE, (this.GetDesignType() & 0xF0) | (Math.min(9, v) & 0x0F)); };
 
 	/* Palette. 0 - 14. */
 	GetPalette() { return (SavData.getUint8(this.startPoint + this.data.PALETTE) & 0xF0) >> 4; };
-	SetPalette(v) { SavData.setUint8(this.startPoint + this.data.PALETTE, ((v) << 4) & 0xF0); };
+	SetPalette(v) { SavData.setUint8(this.startPoint + this.data.PALETTE, (Math.min(14, v) << 4) & 0xF0); };
+
+	/*
+		Set Player Data to the Pattern.
+
+		p: Player class.
+	*/
+	SetPlayerData(p) {
+		this.SetCreatorID(p.GetPlayerID());
+		this.SetCreatorName(p.GetName());
+		this.SetCreatorGender(p.GetGender());
+		this.SetOriginTownID(p.GetTownID());
+		this.SetOriginTownName(p.GetTownName());
+	};
+
+	/*
+		Set a pixel.
+
+		x: x Position.
+		y: y Position.
+		clr: Color index.
+	*/
+	SetPixel(x, y, clr) {
+		SavData.setUint8(this.startPoint + (Math.min(31, y) * 32) + Math.min(31, x), Math.min(14, clr));
+	};
 };
-
-/*
-	Set Pattern Image Data to a canvas.
-
-	buff: The decoded Buffer.
-	palette: The palette.
-	canvasID: The ID of the canvas to set to.
-*/
-export function PatternImageData(buff, palette, canvasID) {
-	const element = document.getElementById(canvasID);
-	let context = element.getContext('2d');
-	const imageData = context.createImageData(32, 32);
-
-	for (let i = 0; i < 1024; i++) {
-		imageData.data[(i * 4) + 0] = (Palette[Math.max(0, buff[i] - 1) + (palette * 15)] >>> 24); // Red.
-		imageData.data[(i * 4) + 1] = (Palette[Math.max(0, buff[i] - 1) + (palette * 15)] >>> 16 & 0xFF); // Blue.
-		imageData.data[(i * 4) + 2] = (Palette[Math.max(0, buff[i] - 1) + (palette * 15)] >>> 8 & 0xFF); // Green.
-		imageData.data[(i * 4) + 3] = (Palette[Math.max(0, buff[i] - 1) + (palette * 15)] & 0xFF); // Alpha.
-	}
-
-	context.putImageData(imageData, 0, 0);
-}
-
-/*
-	Decode a Pattern.
-
-	pattern: Pattern class.
-*/
-export function DecodePattern(pattern) {
-	let DecodedData = new Uint8ClampedArray(0x400); // Buffer.
-
-	for (let i = 0; i < 0x200; i++) {
-		DecodedData[i * 2] = (pattern.GetImageData(i) & 0x0F); // Left is Right.
-		DecodedData[i * 2 + 1] = ((pattern.GetImageData(i) & 0xF0) >> 4); // Right is Left.
-	}
-
-	return DecodedData;
-}

@@ -24,54 +24,141 @@
 		  reasonable ways as different from the original version.
 */
 
-let player, pattern, villager;
-
+/* Strings. */
 import Hairstyles from './strings/en/hairstyles.js';
+import Facetypes from './strings/en/facetypes.js';
 import Haircolors from './strings/en/haircolors.js';
-import Personalities from './strings/en/personalities.js';
+import Items from './strings/en/items.js';
+import Villagers from './strings/en/villagers.js';
 
-import { GetItemName } from './core/item.js';
-import { sav, RawData, SavData } from './utils/savutils.js';
-import { Player } from './core/player.js';
-import { Pattern, DecodePattern, PatternImageData } from './core/pattern.js';
-import { Villager } from './core/villager.js';
-import { Sav } from './core/sav.js';
+/* Editors. */
+import { LoadPlayer, PreparePlayerEditor } from './editor/playerEditor.js';
+import { LoadVillager, PrepareVillagerEditor } from './editor/villagerEditor.js';
+import { SaveSav } from './utils/savutils.js';
 
-export function Test() {
-	player = sav.GetPlayer(0);
-	pattern = player.GetPattern(0);
-	villager = sav.GetVillager(0);
+let currentTab = "Player-Tab";
 
-	/* Log Player info as test. */
-	console.log("PLAYER");
-	console.log("Player Name: " + player.GetName());
-	console.log("Player ID: " + player.GetPlayerID());
-	console.log("Hairstyle: " + Hairstyles[player.GetHairstyle()]);
-	console.log("Haircolor: " + Haircolors[player.GetHaircolor()]);
-	console.log("Wallet Amount: " + player.GetWallet());
-	console.log("Bank Amount: " + player.GetBank());
-	console.log("Pocket Slot 1: " + GetItemName(player.GetPocketItem(0)));
+/* Tab handles. */
+document.getElementById("Player-Tab").onclick = () => TabSwitch("Player-Tab");
+document.getElementById("Villager-Tab").onclick = () => TabSwitch("Villager-Tab");
+document.getElementById("SaveChanges").onclick = () => SaveSav();
 
-	/* Log Villager info as test. */
-	console.log("VILLAGER");
-	console.log("Villager Exist: " + (villager.Exist() ? "Yes." : "No."));
-	console.log("Villager ID: " + villager.GetID());
-	console.log("Villager Name: " + villager.GetVillagerName());
-	console.log("Villager Personality: " + Personalities[villager.GetPersonality()]);
-	console.log("Villager Shirt: " + GetItemName(villager.GetShirt()));
+/*
+	Switch the active menu.
 
-	/* Log Pattern info as test. */
-	console.log("PATTERN");
-	console.log("Pattern Name: " + pattern.GetName());
-	console.log("Origin Town Name: " + pattern.GetOriginTownName());
-	console.log("Origin Town ID: " + pattern.GetOriginTownID());
-	console.log("Creator Name: " + pattern.GetCreatorName());
-	console.log("Creator ID: " + pattern.GetCreatorID());
-	console.log("Creator Gender: " + (pattern.GetCreatorGender() ? "Female" : "Male"));
-	console.log("Designtype: " + pattern.GetDesignType());
-	console.log("Palette: " + (pattern.GetPalette() + 1)); // Palette '0' does not exist, hence 1 - 15 instead of 0 - 14.
+	oldMenu: Old menu, which to hide.
+	newMenu: New menu, which to show.
+*/
+export function MenuSwitch(oldMenu, newMenu) {
+	/* Hide old menu. */
+	switch(oldMenu) {
+		case "Player-Tab":
+			document.getElementById("PlayerEditor").classList.add("d-none");
+			break;
 
-	/* Pattern test display. */
-	let patternData = DecodePattern(pattern);
-	PatternImageData(patternData, pattern.GetPalette(), "TestCanvas");
+		case "Villager-Tab":
+			document.getElementById("VillagerEditor").classList.add("d-none");
+			break;
+	}
+
+	/* Switch the new active menu. */
+	switch(newMenu) {
+		case "Player-Tab":
+			document.getElementById("PlayerEditor").classList.remove("d-none");
+			PreparePlayerEditor();
+			break;
+
+		case "Villager-Tab":
+			document.getElementById("VillagerEditor").classList.remove("d-none");
+			PrepareVillagerEditor();
+			break;
+	}
 }
+
+/*
+	Switch the tabs.
+
+	newTab: What's the new Tab?
+*/
+export function TabSwitch(newTab) {
+	if (currentTab == newTab) return;
+
+	MenuSwitch(currentTab, newTab);
+
+	/* Switch New Tab. */
+	document.getElementById(newTab).classList.remove("btnTabs");
+	document.getElementById(newTab).classList.add("selectedTab");
+
+	/* Switch current Tab. */
+	document.getElementById(currentTab).classList.remove("selectedTab");
+	document.getElementById(currentTab).classList.add("btnTabs");
+	currentTab = newTab;
+}
+
+/*
+	Initialize the Main Editor things.
+*/
+export function InitializeMainEditor() {
+	/* Init Hairstyles. */
+	for (let i = 0; i < 15; i++) {
+		let e = document.createElement("option");
+		e.innerText = Hairstyles[i];
+		e.value = i;
+		document.getElementById("Hairstyle").appendChild(e);
+	}
+
+	/* Init Facetypes. */
+	for (let i = 0; i < 15; i++) {
+		let e = document.createElement("option");
+		e.innerText = Facetypes[i];
+		e.value = i;
+		document.getElementById("Facetype").appendChild(e);
+	}
+
+	/* Init Tan. */
+	for (let i = 0; i < 4; i++) {
+		let e = document.createElement("option");
+		e.innerText = i;
+		e.value = i;
+		document.getElementById("Tan").appendChild(e);
+	}
+
+	/* Init Haircolors. */
+	for (let i = 0; i < 7; i++) {
+		let e = document.createElement("option");
+		e.innerText = Haircolors[i];
+		e.value = i;
+		document.getElementById("Haircolor").appendChild(e);
+	}
+
+	/* Init Item List. */
+	for (let i = 0; i < 3260; i++) {
+		let e = document.createElement("option");
+		let index = Object.getOwnPropertyNames(Items)[i];
+		e.innerText = Items[index].name + " - " + Items[index].category;
+		e.value = index;
+		document.getElementById("ItemList").appendChild(e);
+	}
+	document.getElementById("ItemList").value = 0xFFF1;
+
+	/* Init Villager Species. */
+	for (let i = 0; i < 151; i++) {
+		let e = document.createElement("option");
+		let index = Object.getOwnPropertyNames(Villagers)[i];
+		e.innerText = Villagers[index].name + " - " + Villagers[index].category;
+		e.value = index;
+		document.getElementById("Villager Species").appendChild(e);
+	}
+
+	/* Menu Init. */
+	document.getElementById("SavLoader").classList.add("d-none");
+	document.getElementById("Menu-Tabs").classList.remove("d-none");
+	document.getElementById("PlayerEditor").classList.remove("d-none");
+}
+
+/*
+	Call this, when you need to clear all childs from an HTML Element, like the Pattern canvas, for example.
+*/
+HTMLElement.prototype.clear = function() {
+    while (this.firstChild) this.removeChild(this.firstChild);
+};

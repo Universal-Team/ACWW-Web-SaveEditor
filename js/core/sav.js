@@ -24,7 +24,7 @@
 		  reasonable ways as different from the original version.
 */
 
-import { SavData, memcpy } from '../utils/savutils.js';
+import { SavData, RawData, memcpy } from '../utils/savutils.js';
 import { Player } from './player.js';
 import { Villager } from './villager.js';
 import { fixMainChecksum } from '../utils/checksum.js';
@@ -106,10 +106,9 @@ export class Sav {
 		0 - 3 is valid.
 	*/
 	GetPlayer(player) {
-		if (player > 3) return null;
 		if (!this.data) return null;
 
-		return new Player(this.data.PLAYER_START + (player * this.data.PLAYER_SIZE), this.region, player);
+		return new Player(this.data.PLAYER_START + (Math.min(3, player) * this.data.PLAYER_SIZE), this.region, Math.min(3, player));
 	};
 
 	/*
@@ -118,10 +117,9 @@ export class Sav {
 		0 - 7 is valid.
 	*/
 	GetVillager(villager) {
-		if (villager > 7) return null;
 		if (!this.data) return null;
 
-		return new Villager(this.data.VILLAGER_START + (villager * this.data.VILLAGER_SIZE), this.region);
+		return new Villager(this.data.VILLAGER_START + (Math.min(7, villager) * this.data.VILLAGER_SIZE), this.region);
 	};
 
 	/*
