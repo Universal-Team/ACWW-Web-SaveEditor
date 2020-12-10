@@ -26,9 +26,12 @@
 
 let activePlayer, pNum = 0;
 
+import { getRandomNumber } from '../main.js';
+import { Item } from '../core/item.js';
 import { Player } from '../core/player.js';
 import { Pattern } from '../core/pattern.js';
 import { sav, RawData, SavData, SaveSav } from '../utils/savutils.js';
+import { InitializePatternEditor, LoadPattern } from './patternEditor.js';
 
 /* Player switch. */
 document.getElementById("Player 0").onclick = () => LoadPlayer(0);
@@ -36,66 +39,165 @@ document.getElementById("Player 1").onclick = () => LoadPlayer(1);
 document.getElementById("Player 2").onclick = () => LoadPlayer(2);
 document.getElementById("Player 3").onclick = () => LoadPlayer(3);
 
+/* Playername. */
+document.getElementById("PlayerName").onchange = function() {
+	if (activePlayer && activePlayer.Exist()) activePlayer.SetName(document.getElementById("PlayerName").value);
+};
+
 /* Wallet. */
-document.getElementById("WalletAmount").onchange = () => {
+document.getElementById("WalletAmount").onchange = function() {
 	if (activePlayer && activePlayer.Exist()) activePlayer.SetWallet(document.getElementById("WalletAmount").value);
 };
-document.getElementById("MinWallet").onclick = () => {
+document.getElementById("MinWallet").onclick = function() {
 	if (activePlayer && activePlayer.Exist()) {
 		document.getElementById("WalletAmount").value = 0;
-		activePlayer.SetWallet(0);
+		activePlayer.SetWallet(document.getElementById("WalletAmount").value);
 	}
 };
-document.getElementById("MaxWallet").onclick = () => {
+document.getElementById("MaxWallet").onclick = function() {
 	if (activePlayer && activePlayer.Exist()) {
 		document.getElementById("WalletAmount").value = 99999;
-		activePlayer.SetWallet(99999);
+		activePlayer.SetWallet(document.getElementById("WalletAmount").value);
+	}
+};
+document.getElementById("RandomWallet").onclick = function() {
+	if (activePlayer && activePlayer.Exist()) {
+		document.getElementById("WalletAmount").value = getRandomNumber(0, 99999);
+		activePlayer.SetWallet(document.getElementById("WalletAmount").value);
 	}
 };
 
 /* Bank. */
-document.getElementById("BankAmount").onchange = () => {
+document.getElementById("BankAmount").onchange = function() {
 	if (activePlayer && activePlayer.Exist()) activePlayer.SetBank(document.getElementById("BankAmount").value);
 };
-document.getElementById("MinBank").onclick = () => {
+document.getElementById("MinBank").onclick = function() {
 	if (activePlayer && activePlayer.Exist()) {
 		document.getElementById("BankAmount").value = 0;
-		activePlayer.SetBank(0);
+		activePlayer.SetBank(document.getElementById("BankAmount").value);
 	}
 };
-document.getElementById("MaxBank").onclick = () => {
+document.getElementById("MaxBank").onclick = function() {
 	if (activePlayer && activePlayer.Exist()) {
 		document.getElementById("BankAmount").value = 999999999;
-		activePlayer.SetBank(999999999);
+		activePlayer.SetBank(document.getElementById("BankAmount").value);
+	}
+};
+document.getElementById("RandomBank").onclick = function() {
+	if (activePlayer && activePlayer.Exist()) {
+		document.getElementById("BankAmount").value = getRandomNumber(0, 999999999);
+		activePlayer.SetWallet(document.getElementById("BankAmount").value);
 	}
 };
 
-/* Playername. */
-document.getElementById("PlayerName").onchange = () => {
-	if (activePlayer && activePlayer.Exist()) activePlayer.SetName(document.getElementById("PlayerName").value);
+/* Gender. */
+document.getElementById("Gender").onchange = function() {
+	if (activePlayer && activePlayer.Exist()) activePlayer.SetGender(document.getElementById("Gender").value);
+};
+document.getElementById("RandomGender").onclick = function() {
+	if (activePlayer && activePlayer.Exist()) {
+		document.getElementById("Gender").value = getRandomNumber(0, 1);
+		activePlayer.SetGender(document.getElementById("Gender").value);
+	}
 };
 
 /* Facetype. */
-document.getElementById("Facetype").onchange = () => {
+document.getElementById("Facetype").onchange = function() {
 	if (activePlayer && activePlayer.Exist()) activePlayer.SetFace(document.getElementById("Facetype").value);
+};
+document.getElementById("RandomFacetype").onclick = function() {
+	if (activePlayer && activePlayer.Exist()) {
+
+		document.getElementById("Facetype").value = (activePlayer.GetGender() ? (getRandomNumber(8, 15)) : (getRandomNumber(0, 7)));
+		activePlayer.SetFace(document.getElementById("Facetype").value);
+	}
 };
 
 /* Hairstyle. */
-document.getElementById("Hairstyle").onchange = () => {
+document.getElementById("Hairstyle").onchange = function() {
 	if (activePlayer && activePlayer.Exist()) activePlayer.SetHairstyle(document.getElementById("Hairstyle").value);
+};
+document.getElementById("RandomHairstyle").onclick = function() {
+	if (activePlayer && activePlayer.Exist()) {
+		document.getElementById("Hairstyle").value = (activePlayer.GetGender() ? (getRandomNumber(8, 15)) : (getRandomNumber(0, 7)));
+		activePlayer.SetHairstyle(document.getElementById("Hairstyle").value);
+	}
 };
 
 /* Haircolor. */
-document.getElementById("Haircolor").onchange = () => {
+document.getElementById("Haircolor").onchange = function() {
 	if (activePlayer && activePlayer.Exist()) activePlayer.SetHaircolor(document.getElementById("Haircolor").value);
+};
+document.getElementById("RandomHaircolor").onclick = function() {
+	if (activePlayer && activePlayer.Exist()) {
+		document.getElementById("Haircolor").value = getRandomNumber(0, 6);
+		activePlayer.SetHaircolor(document.getElementById("Haircolor").value);
+	}
 };
 
 /* Tan. */
-document.getElementById("Tan").onchange = () => {
+document.getElementById("Tan").onchange = function() {
 	if (activePlayer && activePlayer.Exist()) activePlayer.SetTan(document.getElementById("Tan").value);
 };
+document.getElementById("RandomTan").onclick = function() {
+	if (activePlayer && activePlayer.Exist()) {
+		document.getElementById("Tan").value = getRandomNumber(3, 0);
+		activePlayer.SetTan(document.getElementById("Tan").value);
+	}
+};
 
+/* Pocket Item Handling. */
+document.getElementById("Player-Pocket").onclick = () => CheckPocketClick();
+function CheckPocketClick() {
+	if (activePlayer && activePlayer.Exist()) { // Check if exist first!
+		let items = document.getElementById('Player-Pocket').children;
 
+		for (let i = 0; i < 15; i++) {
+			items[i].onclick = function() {
+				activePlayer.SetPocketItem(i, document.getElementById("ItemList").value);
+				document.getElementById("Player-Pocket").replaceChild(activePlayer.GetPocketItem(i, 25).canvas, items[i]);
+			}
+		}
+	}
+}
+
+/* Dresser Item Handling. */
+document.getElementById("Player-Dresser").onclick = () => CheckDresserClick();
+function CheckDresserClick() {
+	if (activePlayer && activePlayer.Exist()) { // Check if exist first!
+		let items = document.getElementById('Player-Dresser').children;
+
+		for (let i = 0; i < 90; i++) {
+			items[i].onclick = function() {
+				activePlayer.SetDresserItem(i, document.getElementById("ItemList").value);
+				document.getElementById("Player-Dresser").replaceChild(activePlayer.GetDresserItem(i, 25).canvas, items[i]);
+			}
+		}
+	}
+}
+
+/* Pattern Test. */
+document.getElementById("Player-Pattern").onclick = () => CheckPatternClick();
+function CheckPatternClick() {
+	if (activePlayer && activePlayer.Exist()) { // Check if exist first!
+		let clicked = false;
+		let patterns = document.getElementById('Player-Pattern').children;
+
+		for (let i = 0; i < 8; i++) {
+			patterns[i * 2 + 1].onclick = function() {
+				InitializePatternEditor(0);
+				LoadPattern(activePlayer.GetPattern(i));
+				clicked = true;
+			};
+
+			if (clicked) break;
+		}
+	}
+}
+
+/*
+	Prepare Player Editor.
+*/
 export function PreparePlayerEditor() {
 	for (let i = 0; i < 4; i++) {
 		/* Hide all Players. */
@@ -107,8 +209,6 @@ export function PreparePlayerEditor() {
 
 		if (tmpPlayer.Exist()) document.getElementById("Player " + i.toString()).disabled = false;
 	}
-
-	LoadPlayer(0);
 }
 
 /*
@@ -117,24 +217,27 @@ export function PreparePlayerEditor() {
 	index: The player index (0 - 3).
 */
 export function LoadPlayer(index) {
+	document.getElementById("Player-Pocket").clear();
 	document.getElementById("Player-Pattern").clear();
+	document.getElementById("Player-Dresser").clear();
 
 	pNum = index;
 	activePlayer = sav.GetPlayer(index); // Load Player from Player class.
-	let exist = activePlayer.Exist(); // Get if player exist.
+	const exist = activePlayer.Exist(); // Get if player exist.
 
-	document.getElementById("PlayerName").maxlength = activePlayer.data.NAME_SIZE;
-	document.getElementById("PlayerName").value = (exist ? activePlayer.GetName() : "");
-
-	document.getElementById("WalletAmount").value = (exist ? activePlayer.GetWallet() : 0);
-	document.getElementById("BankAmount").value = (exist ? activePlayer.GetBank() : 0);
-	document.getElementById("Facetype").value = (exist ? activePlayer.GetFace() : 0);
-	document.getElementById("Hairstyle").value = (exist ? activePlayer.GetHairstyle() : 0);
-	document.getElementById("Haircolor").value = (exist ? activePlayer.GetHaircolor() : 0);
-	document.getElementById("Tan").value = (exist ? activePlayer.GetTan() : 0);
-
-	/* Pattern. */
 	if (exist) {
+		document.getElementById("PlayerInfo").classList.remove("d-none"); // Remove no-display if exist.
+
+		document.getElementById("PlayerName").value = activePlayer.GetName();
+		document.getElementById("WalletAmount").value = activePlayer.GetWallet();
+		document.getElementById("BankAmount").value = activePlayer.GetBank();
+		document.getElementById("Gender").value = activePlayer.GetGender();
+		document.getElementById("Facetype").value = activePlayer.GetFace();
+		document.getElementById("Hairstyle").value = activePlayer.GetHairstyle();
+		document.getElementById("Haircolor").value = activePlayer.GetHaircolor();
+		document.getElementById("Tan").value = activePlayer.GetTan();
+
+		/* Pattern. */
 		for (let i = 0; i < 8; i++) {
 			let Pattern = activePlayer.GetPattern(i);
 
@@ -143,6 +246,16 @@ export function LoadPlayer(index) {
                           "\nOrigin Town Name: " + Pattern.GetOriginTownName();
 						  document.getElementById("Player-Pattern").appendChild(e);
 			document.getElementById("Player-Pattern").appendChild(Pattern.image);
+		}
+
+		/* Pocket Items. */
+		for (let i = 0; i < 15; i++) {
+			document.getElementById("Player-Pocket").appendChild(activePlayer.GetPocketItem(i, 25).canvas);
+		}
+
+		/* Dresser Items. */
+		for (let i = 0; i < 90; i++) {
+			document.getElementById("Player-Dresser").appendChild(activePlayer.GetDresserItem(i, 25).canvas);
 		}
 	}
 }

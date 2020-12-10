@@ -26,6 +26,7 @@
 
 let activeVillager, vNum = 0;
 
+import { getRandomNumber } from '../main.js';
 import { Villager } from '../core/villager.js';
 import { sav, RawData, SavData, SaveSav } from '../utils/savutils.js';
 
@@ -40,11 +41,31 @@ document.getElementById("Villager 6").onclick = () => LoadVillager(6);
 document.getElementById("Villager 7").onclick = () => LoadVillager(7);
 
 /* Villager Species / ID. */
-document.getElementById("Villager Species").onchange = () => {
+document.getElementById("Villager Species").onchange = function() {
 	if (activeVillager && activeVillager.Exist()) activeVillager.SetID(document.getElementById("Villager Species").value);
+};
+document.getElementById("RandomVillager").onclick = function() {
+	if (activeVillager && activeVillager.Exist()) {
+		document.getElementById("Villager Species").value = getRandomNumber(0, 0x95);
+		activeVillager.SetID(document.getElementById("Villager Species").value);
+	}
+};
+
+/* Villager Personality. */
+document.getElementById("Villager Personality").onchange = function() {
+	if (activeVillager && activeVillager.Exist()) activeVillager.SetPersonality(document.getElementById("Villager Personality").value);
+};
+document.getElementById("RandomPersonality").onclick = function() {
+	if (activeVillager && activeVillager.Exist()) {
+		document.getElementById("Villager Personality").value = getRandomNumber(0, 5);
+		activeVillager.SetPersonality(document.getElementById("Villager Personality").value);
+	}
 };
 
 
+/*
+	Prepare Villager Editor.
+*/
 export function PrepareVillagerEditor() {
 	for (let i = 0; i < 8; i++) {
 		/* Hide all Villagers. */
@@ -56,8 +77,6 @@ export function PrepareVillagerEditor() {
 
 		if (tmpVillager.Exist()) document.getElementById("Villager " + i.toString()).disabled = false;
 	}
-
-	LoadVillager(0);
 }
 
 /*
@@ -70,5 +89,10 @@ export function LoadVillager(index) {
 	activeVillager = sav.GetVillager(index);
 	let exist = activeVillager.Exist(); // Get if villager exist.
 
-	document.getElementById("Villager Species").value = (exist ? activeVillager.GetID() : 0xFF);
+	if (exist) {
+		document.getElementById("VillagerInfo").classList.remove("d-none"); // Remove no-display if exist.
+
+		document.getElementById("Villager Species").value = activeVillager.GetID();
+		document.getElementById("Villager Personality").value = activeVillager.GetPersonality();
+	}
 }

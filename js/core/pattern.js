@@ -24,6 +24,7 @@
 		  reasonable ways as different from the original version.
 */
 
+import { DownloadFile } from '../main.js';
 import { ReadString, SetString } from '../utils/encoding.js';
 import { SavData } from '../utils/savutils.js';
 
@@ -205,4 +206,39 @@ export class Pattern {
 	SetPixel(x, y, clr) {
 		SavData.setUint8(this.startPoint + (Math.min(31, y) * 32) + Math.min(31, x), Math.min(14, clr));
 	};
+
+	/*
+		Download the current Pattern to file.
+
+		filename: The filename, right now used as "pattern.acww".
+	*/
+	DownloadPattern(filename) {
+		let Data = new Uint8Array(this.data.PATTERN_SIZE);
+
+		for (let i = 0; i < this.data.PATTERN_SIZE; i++) {
+			Data[i] = SavData.getUint8(this.startPoint + i);
+		}
+
+		DownloadFile(Data, filename);
+	};
+
+	/*
+		Inject a Pattern.
+
+		buff: The uint8Array buffer.
+	*/
+	InjectPattern(buff) {
+		if (buff.length == this.data.PATTERN_SIZE) {
+			for (let i = 0; i < this.data.PATTERN_SIZE; i++) {
+				SavData.setUint8(this.startPoint + i, buff[i]);
+			}
+
+			return true;
+
+		} else {
+			alert("Pattern size is not correct!");
+			return false;
+		}
+	};
+
 };

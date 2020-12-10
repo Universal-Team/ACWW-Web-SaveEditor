@@ -78,7 +78,7 @@ const wwCharacterDictionaryJapanese = [
 	isJPN: If is JPN or not.
 */
 function WWToString(buffer, offset, length, isJPN) {
-	var string = '';
+	let string = '';
 
 	for (let i = 0; i < length; i++) {
 		if ((isJPN ? wwCharacterDictionaryJapanese[buffer.getUint8(offset + i)] : wwCharacterDictionary[buffer.getUint8(offset + i)]) == '\0') break;
@@ -125,7 +125,7 @@ function StringToWW(buffer, offset, length, isJPN, string) {
 	length: The length of the string.
 */
 function ReadUTF16(buffer, offset, length) {
-	str = "";
+	let str = "";
 
 	for(let i = 0; i < length * 2; i += 2) {
 		if (buffer.getUint16(offset + i, true) == 0) break; // If 0, we break here.
@@ -145,7 +145,7 @@ function ReadUTF16(buffer, offset, length) {
 	str: The string.
 */
 function SetUTF16(buffer, offset, length, str) {
-	var end = false;
+	let end = false;
 
 	for (let i = 0; i < length; i++) {
 		/* end -> NULL Terminator and fill with Zero until the end. */

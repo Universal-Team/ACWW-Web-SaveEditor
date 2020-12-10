@@ -29,12 +29,13 @@ import Hairstyles from './strings/en/hairstyles.js';
 import Facetypes from './strings/en/facetypes.js';
 import Haircolors from './strings/en/haircolors.js';
 import Items from './strings/en/items.js';
+import Personalities from './strings/en/personalities.js';
 import Villagers from './strings/en/villagers.js';
 
 /* Editors. */
 import { LoadPlayer, PreparePlayerEditor } from './editor/playerEditor.js';
 import { LoadVillager, PrepareVillagerEditor } from './editor/villagerEditor.js';
-import { SaveSav } from './utils/savutils.js';
+import { sav, SaveSav } from './utils/savutils.js';
 
 let currentTab = "Player-Tab";
 
@@ -54,6 +55,7 @@ export function MenuSwitch(oldMenu, newMenu) {
 	switch(oldMenu) {
 		case "Player-Tab":
 			document.getElementById("PlayerEditor").classList.add("d-none");
+			document.getElementById("PlayerInfo").classList.add("d-none");
 			break;
 
 		case "Villager-Tab":
@@ -100,7 +102,7 @@ export function TabSwitch(newTab) {
 */
 export function InitializeMainEditor() {
 	/* Init Hairstyles. */
-	for (let i = 0; i < 15; i++) {
+	for (let i = 0; i < 16; i++) {
 		let e = document.createElement("option");
 		e.innerText = Hairstyles[i];
 		e.value = i;
@@ -108,7 +110,7 @@ export function InitializeMainEditor() {
 	}
 
 	/* Init Facetypes. */
-	for (let i = 0; i < 15; i++) {
+	for (let i = 0; i < 16; i++) {
 		let e = document.createElement("option");
 		e.innerText = Facetypes[i];
 		e.value = i;
@@ -150,15 +152,83 @@ export function InitializeMainEditor() {
 		document.getElementById("Villager Species").appendChild(e);
 	}
 
+	/* Init Villager Personality. */
+	for (let i = 0; i < 7; i++) {
+		let e = document.createElement("option");
+		e.innerText = Personalities[i];
+		e.value = i;
+		document.getElementById("Villager Personality").appendChild(e);
+	}
+
+	/* Init Player Editor Gender. */
+	for (let i = 0; i < 2; i++) {
+		let e = document.createElement("option");
+		e.innerText = (i ? "Female" : "Male");
+		e.value = i;
+		document.getElementById("Gender").appendChild(e);
+	}
+
+	/* Init Pattern Editor Gender. */
+	for (let i = 0; i < 2; i++) {
+		let e = document.createElement("option");
+		e.innerText = (i ? "Female" : "Male");
+		e.value = i;
+		document.getElementById("Pattern-Editor-Creator-Gender").appendChild(e);
+	}
+
+	/* Init Pattern Editor Own Player Selector. */
+	for (let i = 0; i < 4; i++) {
+		if (sav.GetPlayer(i).Exist()) {
+			let e = document.createElement("option");
+			e.innerText = sav.GetPlayer(i).GetName();
+			e.value = i;
+			document.getElementById("Pattern-Editor-Player-Selector").appendChild(e);
+		}
+	}
+
 	/* Menu Init. */
 	document.getElementById("SavLoader").classList.add("d-none");
 	document.getElementById("Menu-Tabs").classList.remove("d-none");
+	document.getElementById("Menu-Tabs").classList.add("Tabs");
+
+	/* Player is always first selected Tab. */
+	document.getElementById("Player-Tab").classList.add("selectedTab");
+	document.getElementById("Player-Tab").classList.remove("btnTabs");
 	document.getElementById("PlayerEditor").classList.remove("d-none");
+	PreparePlayerEditor(); // Prepare Player Editor!
 }
 
 /*
 	Call this, when you need to clear all childs from an HTML Element, like the Pattern canvas, for example.
 */
-HTMLElement.prototype.clear = function() {
-    while (this.firstChild) this.removeChild(this.firstChild);
-};
+Object.defineProperty(HTMLElement.prototype, "clear", { value: function clear() {
+	while (this.firstChild) this.removeChild(this.firstChild);
+  }, enumerable: false })
+
+/*
+	Returns a randomized number.
+
+	minValue: Min num.
+	maxValue: Max num.
+*/
+export function getRandomNumber(minValue, maxValue) {
+	/* Ensure, those are full numbers. */
+	minValue = Math.ceil(minValue);
+	maxValue = Math.floor(maxValue);
+
+	return Math.floor(Math.random() * (maxValue - minValue)) + minValue;
+}
+
+/*
+	Download a Buffer to a file.
+
+	Buffer: The buffer.
+*/
+export function DownloadFile(Buffer, name) {
+	let blob = new Blob([Buffer], { type: "application/octet-stream" });
+	let a = document.createElement('a');
+	let url = window.URL.createObjectURL(blob);
+	a.href = url;
+	a.download = name; // Set download name.
+	a.click();
+}

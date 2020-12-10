@@ -13,6 +13,7 @@
 	<script type="module" src="js/core/player.js"></script>
 	<script type="module" src="js/core/sav.js"></script>
 	<script type="module" src="js/core/villager.js"></script>
+	<script type="module" src ="js/editor/patternEditor.js"></script>
 	<script type="module" src ="js/editor/playerEditor.js"></script>
 	<script type="module" src="js/editor/villagerEditor.js"></script>
 	<script type="module" src="js/main.js"></script>
@@ -23,86 +24,164 @@
 
 <body>
 	<main>
-		<!-- The Sav Selector. -->
-		<div id="SavLoader">
-			<h3>Select your Savefile</h3>
-			<input class="form-file-input" id="savSelector" type="file" accept=".sav">
-		</div>
+		<div id="main" class="UI"> <!-- Background. -->
 
-		<!-- Menu Tabs, including Item list. -->
-		<div id="Menu-Tabs" class="d-none">
-			<button id="Player-Tab" class="selectedTab">Players</button>
-			<button id="Villager-Tab" class="btnTabs">Villagers</button>
-			<button id="SaveChanges" class="btnTabs">Save Changes</button>
+			<!-- The Sav Selector. -->
+			<div id="SavLoader">
+				<!-- Initial Box including a few information. -->
+				<div id="informationBox" class="informationBox">
+					<p>Welcome to ACWW Web Save Editor! Here you can read a few information about it.</p>
+					<p>ACWW Web Save Editor is a work in progress Save Editor for Animal Crossing: Wild World made in Javascript + HTML.</p>
+					<p>It is always recommended to have a backup of your savefile! Just in case something bad might happen!</p>
+					<p>If you are looking for an on console Save Editor, we suggest you'd look for <a href="https://github.com/Universal-Team/WildEdit".>WildEdit</a> on a DS(i), or <a href="https://github.com/Universal-Team/LeafEdit".>LeafEdit</a> on a 3DS.</p>
+					<p>For a list of features, please take a look <a href="https://github.com/Universal-Team/ACWW-Web-SaveEditor/blob/main/FeaturesList.md">here.</a></p>
+					<p>You can find the source code of ACWW Web Save Editor <a href="https://github.com/Universal-Team/ACWW-Web-SaveEditor">here.</a></p>
+					<p>Copyright (C) 2020 by Universal-Team</p>
+				</div>
 
-			<br></br>
-			<label for="ItemList">Selected Temp Item:</label> <select id="ItemList"></select>
-		</div>
-
-		<!-- Player Editor. -->
-		<div id="PlayerEditor" class="d-none">
-			<br></br>
-			<button id="Player 0">Player 1</button>
-			<button id="Player 1">Player 2</button>
-			<button id="Player 2">Player 3</button>
-			<button id="Player 3">Player 4</button>
-
-			<h3> Player Info </h3>
-			<table>
-				<tr>
-					<td>Player Name: <input type="text" id="PlayerName"></td>
-				</tr>
-				<tr>
-					<td>Wallet Amount: <input type="number" min="0" max="99999" id="WalletAmount">
-						<button id="MinWallet">min</button> <button id="MaxWallet">max</button>
-					</td>
-				</tr>
-				<tr>
-					<td>Bank Amount: <input type="number" min="0" max="999999999" id="BankAmount">
-						<button id="MinBank">min</button> <button id="MaxBank">max</button>
-					</td>
-				</tr>
-				<tr>
-					<td><label for="Facetype">Facetype:</label> <select id="Facetype"></select></td>
-				</tr>
-				<tr>
-					<td><label for="Hairstyle">Hairstyle:</label> <select id="Hairstyle"></select></td>
-				</tr>
-				<tr>
-					<td><label for="Haircolor">Haircolor:</label> <select id="Haircolor"></select></td>
-				</tr>
-				<tr>
-					<td><label for="Tan">Tan:</label> <select id= "Tan"></select></td>
-				</tr>
-			</table>
-
-			<!-- Player Pattern. -->
-			<h3>Player Pattern</h3>
-			<div class="column">
-				<div id="Player-Pattern"></div>
+				<button id="savSelector">Select your Savefile</button>
 			</div>
-		</div>
 
-		<!-- Villager Editor. -->
-		<div id="VillagerEditor" class="d-none">
-			<br></br>
-			<button id="Villager 0">Villager 1</button>
-			<button id="Villager 1">Villager 2</button>
-			<button id="Villager 2">Villager 3</button>
-			<button id="Villager 3">Villager 4</button>
-			<button id="Villager 4">Villager 5</button>
-			<button id="Villager 5">Villager 6</button>
-			<button id="Villager 6">Villager 7</button>
-			<button id="Villager 7">Villager 8</button>
+			<!-- Menu Tabs, including Item list. -->
+			<div id="Menu-Tabs" class="d-none">
+				<br></br>
+				<label for="ItemList">Selected Temp Item:</label> <select id="ItemList"></select>
+				<br></br>
+				<button id="Player-Tab" class="selectedTab">Players</button>
+				<button id="Villager-Tab" class="btnTabs">Villagers</button>
+				<button id="SaveChanges" class="btnTabs">Save Changes</button>
+			</div>
 
-			<h3> Villager Info </h3>
-			<table>
+			<!-- Player Editor. -->
+			<div id="PlayerEditor" class="d-none">
+				<br></br>
+				<button id="Player 0">Player 1</button>
+				<button id="Player 1">Player 2</button>
+				<button id="Player 2">Player 3</button>
+				<button id="Player 3">Player 4</button>
+
+				<div id="PlayerInfo" class="d-none">
+					<h3> Player Info </h3>
+					<table>
+						<tr>
+							<td>Player Name: <input type="text" id="PlayerName"></td>
+						</tr>
+						<tr>
+							<td>Wallet Amount: <input type="number" min="0" max="99999" id="WalletAmount">
+								<button id="MinWallet">min</button> <button id="MaxWallet">max</button> <button id="RandomWallet">randomize</button>
+							</td>
+						</tr>
+						<tr>
+							<td>Bank Amount: <input type="number" min="0" max="999999999" id="BankAmount">
+								<button id="MinBank">min</button> <button id="MaxBank">max</button> <button id="RandomBank">randomize</button>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="Gender">Gender:</label> <select id="Gender"></select>
+								<button id="RandomGender">randomize</button>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="Facetype">Facetype:</label> <select id="Facetype"></select>
+								<button id="RandomFacetype">randomize</button>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="Hairstyle">Hairstyle:</label> <select id="Hairstyle"></select>
+								<button id="RandomHairstyle">randomize</button>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="Haircolor">Haircolor:</label> <select id="Haircolor"></select>
+								<button id="RandomHaircolor">randomize</button>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="Tan">Tan:</label> <select id= "Tan"></select>
+								<button id="RandomTan">randomize</button>
+							</td>
+						</tr>
+					</table>
+
+					<!-- Player Pattern. -->
+					<h3>Player Pattern</h3>
+					<div id="Player-Pattern"></div>
+
+					<h3>Player Pocket</h3>
+					<div id="Player-Pocket"></div>
+
+					<h3>Player Dresser</h3>
+					<div id="Player-Dresser"></div>
+				</div>
+			</div>
+
+			<!-- Villager Editor. -->
+			<div id="VillagerEditor" class="d-none">
+				<br></br>
+				<button id="Villager 0">Villager 1</button>
+				<button id="Villager 1">Villager 2</button>
+				<button id="Villager 2">Villager 3</button>
+				<button id="Villager 3">Villager 4</button>
+				<button id="Villager 4">Villager 5</button>
+				<button id="Villager 5">Villager 6</button>
+				<button id="Villager 6">Villager 7</button>
+				<button id="Villager 7">Villager 8</button>
+
+				<div id="VillagerInfo" class="d-none">
+					<h3> Villager Info </h3>
+					<table>
+						<tr>
+							<td><label for="Villager Species">Species:</label> <select id="Villager Species"></select>
+								<button id="RandomVillager">randomize</button>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="Villager Personality">Personality:</label> <select id="Villager Personality"></select>
+								<button id="RandomPersonality">randomize</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<!-- Pattern Editor. This should be the last menu there. -->
+			<div id="PatternEditor" class="d-none">
 				<tr>
-					<td><label for="Villager Species">Species:</label> <select id="Villager Species"></select></td>
+					<td><button id="Pattern-Editor-Return">Return to previous menu</button></td>
 				</tr>
-			</table>
-		</div>
 
+				<h3> Pattern Editor </h3>
+				<table>
+					<tr>
+						<td>Pattern Name: <input type="text" id="Pattern-Editor-Name"></td>
+					</tr>
+					<tr>
+						<td>Creator Name: <input type="text" id="Pattern-Editor-Creator-Name"></td>
+					</tr>
+					<tr>
+						<td>Creator ID: <input type="number" min="0" max="65535" id="Pattern-Editor-Creator-ID"></td>
+					</tr>
+					<tr>
+						<td><label for="Pattern-Editor-Creator-Gender">Creator Gender:</label> <select id="Pattern-Editor-Creator-Gender"></select></td>
+					</tr>
+					<tr>
+						<td>Origin Town Name: <input type="text" id="Pattern-Editor-Town-Name"></td>
+					</tr>
+					<tr>
+						<td>Origin Town ID: <input type="number" min="0" max="65535" id="Pattern-Editor-Town-ID"></td>
+					</tr>
+					<tr>
+						<td><button id="InjectPattern">Inject Pattern</button> <button id="DumpPattern">Dump Pattern</button></td>
+					</tr>
+					<tr>
+						<td><label for="Pattern-Editor-Player-Selector">Set Pattern Info</label> <select id="Pattern-Editor-Player-Selector"></select>
+							<button id="Pattern-Editor-Own-Apply">Apply</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
 	<!-- End. -->
 	</main>
 </body>

@@ -30,7 +30,7 @@ export let sav; // The Sav class.
 let saveSize; // Size of the Sav.
 
 /*
-	That is used, to use use the Gamecode + Savcopy offsets for getting the Save region.
+	That is used, to use the Gamecode + Savcopy offsets for getting the Save region.
 */
 const InitStruct = {
 	Gamecodes: [ 0xC5, 0x8A, 0x32, 0x32 ], // The gamecode from offset 0x0 & SavCopyOffset.
@@ -38,18 +38,26 @@ const InitStruct = {
 	ValidSizes: [ 0x40000, 0x4007A, 0x80000, 0x8007A ] // Valid Savesizes.
 };
 
-import { InitializeMainEditor } from '../main.js';
+import { DownloadFile, InitializeMainEditor } from '../main.js';
 import { LoadPlayer } from '../editor/playerEditor.js';
 import { Sav } from '../core/sav.js';
 
-document.getElementById("savSelector").onchange = (e) => loadSav(e.target.files[0]); // Used to handle things after SavSelection.
+/* Load and Select the Savfile. */
+document.getElementById("savSelector").onclick = function() {
+	let input = document.createElement("input");
+	input.type = "file";
+	input.accept = ".sav";
+	input.click();
+
+	input.onchange = (e) => loadSav(e.target.files[0]);
+};
 
 /*
 	Loads a Savefile.
 
 	savefile: The savefile to read from.
 */
-export function loadSav(savefile) {
+function loadSav(savefile) {
 	let good = false;
 
 	if (!savefile) {
@@ -82,9 +90,9 @@ export function loadSav(savefile) {
 /*
 	Detect the Savefile.
 
-	SaveData: The buffer to detect from.
+	SaveData: The DataView to detect from.
 */
-export function DetectSavefile(SaveData) {
+function DetectSavefile(SaveData) {
 	sav = null; // Reset to null first.
 
 	for (let i = 0; i < 4; i++) {
@@ -100,7 +108,7 @@ export function DetectSavefile(SaveData) {
 
 	buffer: The buffer to load from.
 */
-export function LoadData(buffer) {
+function LoadData(buffer) {
 	RawData = new Uint8Array(buffer);
 	SavData = new DataView(RawData.buffer);
 	DetectSavefile(SavData); // Detect the savefile.
@@ -119,14 +127,7 @@ export function SaveSav() {
 
 	/* Fix checksum and copy to second Savcopy. */
 	sav.Finish();
-
-	/* Download the file. */
-	let blob = new Blob([RawData], { type: "application/octet-stream" });
-	let a = document.createElement('a');
-	let url = window.URL.createObjectURL(blob);
-	a.href = url;
-	a.download = fileName; // Set download name.
-	a.click();
+	DownloadFile(RawData, fileName); // Download!
 }
 
 /*

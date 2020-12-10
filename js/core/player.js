@@ -28,6 +28,7 @@ import { ReadString, SetString } from '../utils/encoding.js';
 import { SavData } from '../utils/savutils.js';
 import { Pattern } from './pattern.js';
 import { Letter } from './letter.js';
+import { Item } from './item.js';
 
 const PLAYER_EUR_USA = {
 	PLAYER_SIZE: 0x228C,
@@ -173,11 +174,15 @@ export class Player {
 	Exist() { return this.GetPlayerID() != 0; };
 
 	/* Pocket Items: 0 - 14. */
-	GetPocketItem(slot) { return SavData.getUint16(this.startPoint + this.data.POCKET + (Math.min(14, slot) * 2), true); };
+	GetPocketItem(slot, size) {
+		return new Item(SavData.getUint16(this.startPoint + this.data.POCKET + (Math.min(14, slot) * 2), true), size);
+	};
 	SetPocketItem(slot, v) { SavData.setUint16(this.startPoint + this.data.POCKET + (Math.min(14, slot) * 2), v, true); };
 
 	/* Dresser Items: 0 - 89. */
-	GetDresserItem(slot) { return SavData.getUint16(this.data.DRESSER + (0xB4 * this.playerIndex) + Math.min(89, slot) * 2, true); };
+	GetDresserItem(slot, size) {
+		return new Item(SavData.getUint16(this.data.DRESSER + (0xB4 * this.playerIndex) + Math.min(89, slot) * 2, true), size);
+	};
 	SetDresserItem(slot, v) { SavData.setUint16(this.data.DRESSER + (0xB4 * this.playerIndex) + Math.min(89, slot) * 2, v, true); };
 
 	/* Pattern. 0 - 7. */
