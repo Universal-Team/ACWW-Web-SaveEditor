@@ -108,7 +108,7 @@ function EndOfAcreSelection(selection) {
 	activeTown.SetAcre(acreToSelect, selection); // Set selected Acre.
 
 	let acre = document.createElement("img");
-	acre.src = "./assets/images/acres/" + activeTown.GetAcre(acreToSelect).toString(16) + ".png";
+	acre.src = "./assets/images/acres/" + activeTown.GetAcre(acreToSelect).toString(16).toUpperCase() + ".png";
 	acre.width = 64;
 	acre.height = 64;
 	document.getElementById("acresGrid").replaceChild(acre, document.getElementById("acresGrid").children[acreToSelect]);
@@ -134,7 +134,7 @@ export function LoadTown() {
 	/* Load Acres. */
 	for (let i = 0; i < 36; i++) {
 		let acre = document.createElement("img");
-		acre.src = "./assets/images/acres/" + activeTown.GetAcre(i).toString(16) + ".png";
+		acre.src = "./assets/images/acres/" + activeTown.GetAcre(i).toString(16).toUpperCase() + ".png";
 
 		acre.width = 64;
 		acre.height = 64;

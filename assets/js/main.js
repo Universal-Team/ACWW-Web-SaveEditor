@@ -201,7 +201,7 @@ export function InitializeMainEditor() {
 	/* Init Acre Selection. */
 	for (let i = 0; i < 131; i++) {
 		let acre = document.createElement("img");
-		acre.src = "assets/images/acres/" + i.toString(16) + ".png";
+		acre.src = "assets/images/acres/" + i.toString(16).toUpperCase() + ".png";
 		acre.width = 50; // is 50 good size? Maybe changes required.
 		acre.height = 50;
 		document.getElementById("AcreSelection").appendChild(acre);
