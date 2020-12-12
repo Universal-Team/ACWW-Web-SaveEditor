@@ -24,6 +24,12 @@
 * Pocket Items
 * Dresser Items
 
+## Town
+* Town Name
+* Town ID
+* Turnip Price
+* Town Map Acres
+
 ## Villager
 * Species / ID
 * Personality

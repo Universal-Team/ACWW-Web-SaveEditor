@@ -5,21 +5,22 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,maximum-scale=2">
 	<title> ACWW Web SaveEditor </title>
-	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="assets/css/main.css">
 
-	<script type="module" src="js/core/item.js"></script>
-	<script type="module" src="js/core/letter.js"></script>
-	<script type="module" src="js/core/pattern.js"></script>
-	<script type="module" src="js/core/player.js"></script>
-	<script type="module" src="js/core/sav.js"></script>
-	<script type="module" src="js/core/villager.js"></script>
-	<script type="module" src ="js/editor/patternEditor.js"></script>
-	<script type="module" src ="js/editor/playerEditor.js"></script>
-	<script type="module" src="js/editor/villagerEditor.js"></script>
-	<script type="module" src="js/main.js"></script>
-	<script type="module" src="js/utils/checksum.js"></script>
-	<script type="module" src="js/utils/encoding.js"></script>
-	<script type="module" src="js/utils/savutils.js"></script>
+	<script type="module" src="assets/js/core/item.js"></script>
+	<script type="module" src="assets/js/core/letter.js"></script>
+	<script type="module" src="assets/js/core/pattern.js"></script>
+	<script type="module" src="assets/js/core/player.js"></script>
+	<script type="module" src="assets/js/core/sav.js"></script>
+	<script type="module" src="assets/js/core/town.js"></script>
+	<script type="module" src="assets/js/core/villager.js"></script>
+	<script type="module" src ="assets/js/editor/patternEditor.js"></script>
+	<script type="module" src ="assets/js/editor/playerEditor.js"></script>
+	<script type="module" src="assets/js/editor/villagerEditor.js"></script>
+	<script type="module" src="assets/js/main.js"></script>
+	<script type="module" src="assets/js/utils/checksum.js"></script>
+	<script type="module" src="assets/js/utils/encoding.js"></script>
+	<script type="module" src="assets/js/utils/savutils.js"></script>
 </head>
 
 <body>
@@ -49,6 +50,7 @@
 				<br></br>
 				<button id="Player-Tab" class="selectedTab">Players</button>
 				<button id="Villager-Tab" class="btnTabs">Villagers</button>
+				<button id="Town-Tab" class="btnTabs">Town</button>
 				<button id="SaveChanges" class="btnTabs">Save Changes</button>
 			</div>
 
@@ -83,7 +85,7 @@
 						</tr>
 						<tr>
 							<td><label for="Facetype">Facetype:</label> <select id="Facetype"></select>
-								<button id="RandomFacetype">randomize</button>
+								<button id="RandomFacetype">randomize</button> <img id="FacetypePrev">
 							</td>
 						</tr>
 						<tr>
@@ -108,10 +110,15 @@
 					<div id="Player-Pattern"></div>
 
 					<h3>Player Pocket</h3>
-					<div id="Player-Pocket"></div>
+					<div id="PocketGrid"></div>
 
 					<h3>Player Dresser</h3>
-					<div id="Player-Dresser"></div>
+					<div>Dresser 1 <div id="DresserBox1" class="DresserGrid"></div></div>
+					<div>Dresser 2 <div id="DresserBox2" class="DresserGrid"></div></div>
+					<div>Dresser 3 <div id="DresserBox3" class="DresserGrid"></div></div>
+					<div>Dresser 4 <div id="DresserBox4" class="DresserGrid"></div></div>
+					<div>Dresser 5 <div id="DresserBox5" class="DresserGrid"></div></div>
+					<div>Dresser 6 <div id="DresserBox6" class="DresserGrid"></div></div>
 				</div>
 			</div>
 
@@ -144,7 +151,26 @@
 				</div>
 			</div>
 
-			<!-- Pattern Editor. This should be the last menu there. -->
+			<!-- Town Editor. -->
+			<div id="TownEditor" class="d-none">
+				<h3> Town Info </h3>
+				<table>
+					<tr>
+						<td><label for="Town-Editor-Name">Town Name: </label><input type="text" id="Town-Editor-Name"></td>
+					</tr>
+					<tr>
+						<td>Town ID: <input type="number" min="0" max="65535" id="Town-Editor-ID"></td>
+					</tr>
+					<tr>
+						<td>Turnip Price: <input type="number" min="0" max="255" id="Town-Editor-Turnip-Price"></td>
+					</tr>
+				</table>
+
+				<h1>Town Acres</h1>
+				<div id="acresGrid"></div>
+			</div>
+
+			<!-- Pattern Editor. -->
 			<div id="PatternEditor" class="d-none">
 				<tr>
 					<td><button id="Pattern-Editor-Return">Return to previous menu</button></td>
@@ -180,7 +206,13 @@
 					</tr>
 				</table>
 			</div>
+		</div>
 
+		<!-- Acre Selection. -->
+		<div id="SelectAcre" class="d-none">
+			<button id="Select-Acre-Cancel">Cancel Acre Selection</button>
+			<h3>Select an Acre.</h3>
+			<div id="AcreSelection"></div>
 		</div>
 	<!-- End. -->
 	</main>

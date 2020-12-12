@@ -1,0 +1,96 @@
+---
+---
+
+// Display none.
+.d-none {
+	display: none;
+};
+
+// Information box.
+.informationBox {
+	background-color: rgb(0, 120, 255);
+	border-radius: 4mm;
+	color: whitesmoke;
+};
+
+// UI.
+.UI {
+	background-color: rgb(0, 100, 255);
+};
+
+// Tab Background.
+.Tabs {
+	background-color: rgb(0, 70, 255);
+	border-radius: 8mm;
+	color: whitesmoke;
+};
+
+// Unselected Button from the tabs.
+.btnTabs {
+	background-color: rgb(100, 100, 100);
+	border-color: rgb(0, 0, 0);
+	border-radius: 5mm;
+	color: rgb(0, 0, 0);
+	padding: 10px 35px;
+	text-align: center;
+	font-size: 20px;
+	cursor: pointer;
+};
+
+// Selected Button from the tabs.
+.selectedTab {
+	background-color: rgb(180, 180, 180);
+	border-color: rgb(0, 0, 0);
+	border-radius: 5mm;
+	color: rgb(44, 44, 44);
+	padding: 10px 35px;
+	text-align: center;
+	font-size: 20px;
+	cursor: pointer;
+};
+
+// Item canvas style.
+.ItemOutline {
+	border-radius: 50%;
+	cursor: pointer;
+};
+
+// The Acres grid.
+#acresGrid {
+	display: grid;
+	grid-template-columns: auto auto auto auto auto auto;
+	width: min-content;
+};
+
+// The Pocket Grid, there are only 15 items, so this can be a ElementByID.
+#PocketGrid {
+	display: grid;
+	grid-template-columns: auto auto auto auto auto;
+	width: min-content;
+	grid-gap: 1mm;
+};
+
+// There are 6 * 15 slots, hence this needs to be a class.
+.DresserGrid {
+	display: grid;
+	grid-template-columns: auto auto auto auto auto;
+	width: min-content;
+	grid-gap: 1mm;
+};
+
+// Player Pattern, 4x2.
+#Player-Pattern {
+	display: grid;
+	grid-template-columns: auto auto auto auto;
+	width: min-content;
+};
+
+// Acre Selection.
+#AcreSelection {
+	background-color: rgba(119, 119, 119, 0.979);
+	padding: 5px;
+	display: grid;
+	grid-template-columns: auto auto auto auto auto auto;
+	width: min-content;
+	grid-gap: 1mm;
+};
