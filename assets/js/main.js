@@ -28,14 +28,18 @@
 import Hairstyles from './strings/en/hairstyles.js';
 import Facetypes from './strings/en/facetypes.js';
 import Haircolors from './strings/en/haircolors.js';
+import HouseSizes from './strings/en/housesizes.js';
 import Items from './strings/en/items.js';
 import Personalities from './strings/en/personalities.js';
 import Villagers from './strings/en/villagers.js';
 
 /* Editors. */
-import { LoadPlayer, PreparePlayerEditor } from './editor/playerEditor.js';
+import { PrepareHouseEditor } from './editor/houseEditor.js';
+import { PreparePlayerEditor } from './editor/playerEditor.js';
+import { PrepareShopEditor } from './editor/shopEditor.js';
 import { PrepareTownEditor } from './editor/townEditor.js';
-import { LoadVillager, PrepareVillagerEditor } from './editor/villagerEditor.js';
+import { PrepareVillagerEditor } from './editor/villagerEditor.js';
+
 import { sav, SaveSav } from './utils/savutils.js';
 
 let currentTab = "Player-Tab";
@@ -44,6 +48,8 @@ let currentTab = "Player-Tab";
 document.getElementById("Player-Tab").onclick = () => TabSwitch("Player-Tab");
 document.getElementById("Villager-Tab").onclick = () => TabSwitch("Villager-Tab");
 document.getElementById("Town-Tab").onclick = () => TabSwitch("Town-Tab");
+document.getElementById("Shop-Tab").onclick = () => TabSwitch("Shop-Tab");
+document.getElementById("House-Tab").onclick = () => TabSwitch("House-Tab");
 document.getElementById("SaveChanges").onclick = () => SaveSav();
 
 /*
@@ -68,6 +74,14 @@ export function MenuSwitch(oldMenu, newMenu) {
 		case "Town-Tab":
 			document.getElementById("TownEditor").classList.add("d-none");
 			break;
+
+		case "Shop-Tab":
+			document.getElementById("ShopEditor").classList.add("d-none");
+			break;
+
+		case "House-Tab":
+			document.getElementById("HouseEditor").classList.add("d-none");
+			break;
 	}
 
 	/* Switch the new active menu. */
@@ -85,6 +99,16 @@ export function MenuSwitch(oldMenu, newMenu) {
 		case "Town-Tab":
 			document.getElementById("TownEditor").classList.remove("d-none");
 			PrepareTownEditor();
+			break;
+
+		case "Shop-Tab":
+			document.getElementById("ShopEditor").classList.remove("d-none");
+			PrepareShopEditor();
+			break;
+
+		case "House-Tab":
+			document.getElementById("HouseEditor").classList.remove("d-none");
+			PrepareHouseEditor();
 			break;
 	}
 };
@@ -205,6 +229,14 @@ export function InitializeMainEditor() {
 		acre.width = 50; // is 50 good size? Maybe changes required.
 		acre.height = 50;
 		document.getElementById("AcreSelection").appendChild(acre);
+	}
+
+	/* Init House Size selection. */
+	for (let i = 0; i < 7; i++) {
+		let e = document.createElement("option");
+		e.innerText = HouseSizes[i];
+		e.value = i;
+		document.getElementById("HouseSize").appendChild(e);
 	}
 
 	/* Menu Init. */

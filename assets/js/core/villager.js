@@ -28,6 +28,7 @@ import { ReadString, SetString } from '../utils/encoding.js';
 import { SavData } from '../utils/savutils.js';
 import { Pattern } from './pattern.js';
 import { Letter } from './letter.js';
+import { Item } from './item.js';
 
 const VILLAGER_EUR_USA = {
 	VILLAGER_SIZE: 0x700,
@@ -101,7 +102,7 @@ export class Villager {
 	GetLetter() { return new Letter(this.startPoint + this.data.LETTER, this.region); };
 
 	/* Villager Furnitures. 0 - 9. */
-	GetFurniture(slot) { return SavData.getUint16(this.startPoint + this.data.FURNITURE + (Math.min(9, slot) * 2), true); };
+	GetFurniture(slot) { return new Item(SavData.getUint16(this.startPoint + this.data.FURNITURE + (Math.min(9, slot) * 2), true)); };
 	SetFurniture(slot, v) { SavData.setUint16(this.startPoint + this.data.FURNITURE + (Math.min(9, slot) * 2), v, true); };
 
 	/* Villager Personality. */
@@ -113,7 +114,7 @@ export class Villager {
 	SetID(v) { SavData.setUint8(this.startPoint + this.data.ID, Math.min(255, v)); };
 
 	/* Villager Shirt. */
-	GetShirt() { return SavData.getUint16(this.startPoint + this.data.SHIRT, true); };
+	GetShirt() { return new Item(SavData.getUint16(this.startPoint + this.data.SHIRT, true)); };
 	SetShirt(v) { SavData.setUint16(this.startPoint + this.data.SHIRT, v, true); };
 
 	/* Villager Wallpaper. */

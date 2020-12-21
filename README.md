@@ -1,5 +1,5 @@
 # ACWW-Web-SaveEditor
-A work in progress Animal Crossing: Wild World Web Save Editor made in JavaScript and HTML.
+A work in progress Animal Crossing: Wild World Web Save Editor made in JavaScript, HTML and CSS.
 
 For a list of available features, see [here](https://github.com/Universal-Team/ACWW-Web-SaveEditor/blob/main/FeaturesList.md).
 

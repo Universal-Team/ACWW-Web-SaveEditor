@@ -40,6 +40,13 @@ export function PrepareTownEditor() {
 	LoadTown();
 };
 
+document.getElementById("TownFlagPattern").onclick = function() {
+	if (activeTown) {
+		InitializePatternEditor(2);
+		LoadPattern(activeTown.GetTownFlag());
+	}
+};
+
 /* Acre stuff. */
 document.getElementById("acresGrid").onclick = () => TownAcreCheck();
 document.getElementById("AcreSelection").onclick = () => AcreSelectCheck();
@@ -125,6 +132,7 @@ function EndOfAcreSelection(selection) {
 export function LoadTown() {
 	activeTown = sav.GetTown();
 	document.getElementById("acresGrid").clear(); // Clear all images first.
+	document.getElementById("TownFlagPattern").clear();
 
 	document.getElementById("Town-Editor-Name").value = activeTown.GetTownName();
 	document.getElementById("Town-Editor-ID").value = activeTown.GetTownID();
@@ -141,4 +149,7 @@ export function LoadTown() {
 
 		acresGrid.appendChild(acre);
 	}
+
+	/* Load Town Flag Pattern. */
+	document.getElementById("TownFlagPattern").appendChild(activeTown.GetTownFlag().image);
 };

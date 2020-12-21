@@ -174,15 +174,11 @@ export class Player {
 	Exist() { return this.GetPlayerID() != 0; };
 
 	/* Pocket Items: 0 - 14. */
-	GetPocketItem(slot, size, style) {
-		return new Item(SavData.getUint16(this.startPoint + this.data.POCKET + (Math.min(14, slot) * 2), true), size, style);
-	};
+	GetPocketItem(slot) { return new Item(SavData.getUint16(this.startPoint + this.data.POCKET + (Math.min(14, slot) * 2), true)); };
 	SetPocketItem(slot, v) { SavData.setUint16(this.startPoint + this.data.POCKET + (Math.min(14, slot) * 2), v, true); };
 
 	/* Dresser Items: 0 - 89. */
-	GetDresserItem(slot, size, style) {
-		return new Item(SavData.getUint16(this.data.DRESSER + (0xB4 * this.playerIndex) + Math.min(89, slot) * 2, true), size, style);
-	};
+	GetDresserItem(slot) { return new Item(SavData.getUint16(this.data.DRESSER + (0xB4 * this.playerIndex) + Math.min(89, slot) * 2, true)); };
 	SetDresserItem(slot, v) { SavData.setUint16(this.data.DRESSER + (0xB4 * this.playerIndex) + Math.min(89, slot) * 2, v, true); };
 
 	/* Pattern. 0 - 7. */

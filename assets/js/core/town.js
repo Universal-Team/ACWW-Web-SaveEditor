@@ -106,24 +106,18 @@ export class Town {
 	SetAcre(slot, v) { SavData.setUint8(this.data.ACRE + Math.min(35, slot), Math.min(131, v)); };
 
 	/* Town Map Items. 4095. */
-	GetMapItem(slot, size, style) {
-		return new Item(SavData.getUint16(this.data.MAP_ITEMS + (Math.min(4095, slot) * 2)), size, style);
-	};
+	GetMapItem(slot) { return new Item(SavData.getUint16(this.data.MAP_ITEMS + (Math.min(4095, slot) * 2))); };
 	SetMapItem(slot, v) { SavData.setUint16(this.data.MAP_ITEMS + (Math.min(4095, slot) * 2), v, true); };
 
 	/* Town Flag Pattern. */
 	GetTownFlag() { return new Pattern(this.data.TOWNFLAG, this.region); };
 
 	/* Lost and Found Items. */
-	GetLostAndFoundItems(slot, size, style) {
-		return new Item(SavData.getUint16(this.data.LOST_AND_FOUND + (Math.min(14, slot) * 2)), size, style);
-	};
+	GetLostAndFoundItems(slot) { return new Item(SavData.getUint16(this.data.LOST_AND_FOUND + (Math.min(14, slot) * 2))); };
 	SetLostAndFoundItems(slot, v) { SavData.setUint16(this.data.LOST_AND_FOUND + (Math.min(14, slot) * 2), v, true); };
 
 	/* Recycle Items. */
-	GetRecycleItems(slot, size, style) {
-		return new Item(SavData.getUint16(this.data.RECYCLE_ITEMS + (Math.min(14, slot) * 2)), size, style);
-	};
+	GetRecycleItems(slot) { return new Item(SavData.getUint16(this.data.RECYCLE_ITEMS + (Math.min(14, slot) * 2))); };
 	SetRecycleItems(slot, v) { SavData.setUint16(this.data.RECYCLE_ITEMS + (Math.min(14, slot) * 2), v, true); };
 
 	/* Turnip Price. */

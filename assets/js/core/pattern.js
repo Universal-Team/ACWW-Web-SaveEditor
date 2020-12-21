@@ -151,6 +151,7 @@ export class Pattern {
 		}
 	};
 
+
 	/* Pattern Name. */
 	GetName() { return ReadString(SavData, this.startPoint + this.data.NAME, this.data.NAME_SIZE, (this.region == 2), (this.region == 3)); };
 	SetName(v) { SetString(SavData, this.startPoint + this.data.NAME, this.data.NAME_SIZE, (this.region == 2), (this.region == 3), v); };
@@ -203,9 +204,7 @@ export class Pattern {
 		y: y Position.
 		clr: Color index.
 	*/
-	SetPixel(x, y, clr) {
-		SavData.setUint8(this.startPoint + (Math.min(31, y) * 32) + Math.min(31, x), Math.min(14, clr));
-	};
+	SetPixel(x, y, clr) { SavData.setUint8(this.startPoint + (Math.min(31, y) * 32) + Math.min(31, x), Math.min(14, clr)); };
 
 	/*
 		Download the current Pattern to file.

@@ -29,6 +29,8 @@ import { Player } from './player.js';
 import { Town } from './town.js';
 import { Villager } from './villager.js';
 import { fixMainChecksum } from '../utils/checksum.js';
+import { Shop } from './shop.js';
+import { House } from './house.js';
 
 const SAV_EUR = {
 	CHECKSUM_OFFSET: 0x15FDC,
@@ -38,7 +40,8 @@ const SAV_EUR = {
 	PLAYER_SIZE: 0x228C,
 	PLAYER_START: 0xC,
 	VILLAGER_START: 0x8A3C,
-	VILLAGER_SIZE: 0x700
+	VILLAGER_SIZE: 0x700,
+	HOUSE_START: 0xE558
 };
 
 const SAV_USA = {
@@ -49,7 +52,8 @@ const SAV_USA = {
 	PLAYER_SIZE: 0x228C,
 	PLAYER_START: 0xC,
 	VILLAGER_START: 0x8A3C,
-	VILLAGER_SIZE: 0x700
+	VILLAGER_SIZE: 0x700,
+	HOUSE_START: 0xE558
 };
 
 const SAV_JPN = {
@@ -60,7 +64,8 @@ const SAV_JPN = {
 	PLAYER_SIZE: 0x1D10,
 	PLAYER_START: 0xC,
 	VILLAGER_START: 0x744C,
-	VILLAGER_SIZE: 0x5C0
+	VILLAGER_SIZE: 0x5C0,
+	HOUSE_START: 0xC554
 };
 
 const SAV_KOR = {
@@ -71,7 +76,8 @@ const SAV_KOR = {
 	PLAYER_SIZE: 0x249C,
 	PLAYER_START: 0x14,
 	VILLAGER_START: 0x9284,
-	VILLAGER_SIZE: 0x7EC
+	VILLAGER_SIZE: 0x7EC,
+	HOUSE_START: 0xF52C
 };
 
 export class Sav {
@@ -130,6 +136,24 @@ export class Sav {
 		if (!this.data) return null;
 
 		return new Town(this.region);
+	};
+
+	/*
+		Return the Shops.
+	*/
+	GetShop() {
+		if (!this.data) return null;
+
+		return new Shop(this.region);
+	};
+
+	/*
+		Return the House.
+	*/
+	GetHouse() {
+		if (!this.data) return null;
+
+		return new House(this.data.HOUSE_START);
 	};
 
 	/*

@@ -145,7 +145,7 @@ document.getElementById("Tan").onchange = function() {
 };
 document.getElementById("RandomTan").onclick = function() {
 	if (activePlayer && activePlayer.Exist()) {
-		document.getElementById("Tan").value = getRandomNumber(3, 0);
+		document.getElementById("Tan").value = getRandomNumber(0, 3);
 		activePlayer.SetTan(document.getElementById("Tan").value);
 	}
 };
@@ -159,7 +159,7 @@ function CheckPocketClick() {
 		for (let i = 0; i < 15; i++) {
 			items[i].onclick = function() {
 				activePlayer.SetPocketItem(i, document.getElementById("ItemList").value);
-				document.getElementById("PocketGrid").replaceChild(activePlayer.GetPocketItem(i, 35, "ItemOutline").canvas, items[i]);
+				document.getElementById("PocketGrid").replaceChild(activePlayer.GetPocketItem(i).canvas, items[i]);
 			}
 		}
 	}
@@ -179,7 +179,7 @@ function CheckDresserClick(box) {
 		for (let i = 0; i < 15; i++) {
 			items[i].onclick = function() {
 				activePlayer.SetDresserItem(i + (box * 15), document.getElementById("ItemList").value);
-				document.getElementById('DresserBox' + (box + 1).toString()).replaceChild(activePlayer.GetDresserItem(i + (box * 15), 35, "ItemOutline").canvas, items[i]);
+				document.getElementById('DresserBox' + (box + 1).toString()).replaceChild(activePlayer.GetDresserItem(i + (box * 15)).canvas, items[i]);
 			}
 		}
 	}
@@ -262,7 +262,7 @@ export function LoadPlayer(index) {
 		/* Pocket Items. */
 		const pocketGrid = document.getElementById("PocketGrid");
 		for (let i = 0; i < 15; i++) {
-			pocketGrid.appendChild(activePlayer.GetPocketItem(i, 35, "ItemOutline").canvas);
+			pocketGrid.appendChild(activePlayer.GetPocketItem(i).canvas);
 		}
 
 		/* Dresser Items. */
@@ -270,7 +270,7 @@ export function LoadPlayer(index) {
 		for (let i = 0; i < 90; i++) {
 			if (i % 15 == 0) box++;
 
-			document.getElementById("DresserBox" + box.toString()).appendChild(activePlayer.GetDresserItem(i, 35, "ItemOutline").canvas);
+			document.getElementById("DresserBox" + box.toString()).appendChild(activePlayer.GetDresserItem(i).canvas);
 		}
 	}
 };

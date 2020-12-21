@@ -49,12 +49,6 @@
 	cursor: pointer;
 };
 
-// Item canvas style.
-.ItemOutline {
-	border-radius: 50%;
-	cursor: pointer;
-};
-
 // The Acres grid.
 #acresGrid {
 	display: grid;
@@ -65,6 +59,7 @@
 // The Pocket Grid, there are only 15 items, so this can be a ElementByID.
 #PocketGrid {
 	display: grid;
+	cursor: pointer;
 	grid-template-columns: auto auto auto auto auto;
 	width: min-content;
 	grid-gap: 1mm;
@@ -76,6 +71,7 @@
 	grid-template-columns: auto auto auto auto auto;
 	width: min-content;
 	grid-gap: 1mm;
+	cursor: pointer;
 };
 
 // Player Pattern, 4x2.
@@ -94,3 +90,33 @@
 	width: min-content;
 	grid-gap: 1mm;
 };
+
+/*
+	Room Item Layer grids. (16)
+*/
+.RoomItemGrid {
+	display: grid;
+	grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+	width: min-content;
+	grid-gap: 1mm;
+	cursor: pointer;
+};
+
+/*
+	Room Wallpaper, Carpet + Song.
+*/
+#RoomItems {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	width: min-content;
+	grid-gap: 1mm;
+	cursor: pointer;
+};
+
+#VillagerFurnitures {
+	display: grid;
+	grid-template-columns: auto auto auto auto auto;
+	width: min-content;
+	grid-gap: 1mm;
+	cursor: pointer;
+}

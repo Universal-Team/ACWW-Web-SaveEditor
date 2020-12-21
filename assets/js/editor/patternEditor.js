@@ -120,10 +120,12 @@ export function InitializePatternEditor(menu) {
 			break;
 
 		case 2:
-			break; // Town menu.
+			document.getElementById("TownEditor").classList.add("d-none");
+			break;
 
 		case 3:
-			break; // Shop menu.
+			document.getElementById("ShopEditor").classList.add("d-none");
+			break;
 	}
 };
 
@@ -147,11 +149,13 @@ document.getElementById("Pattern-Editor-Return").onclick = function() {
 			break;
 
 		case 2:
-			// TownFlag Pattern.
+			// Town Flag.
+			document.getElementById("TownEditor").classList.remove("d-none");
 			break;
 
 		case 3:
 			// Able Sister Pattern.
+			document.getElementById("ShopEditor").classList.remove("d-none");
 			break;
 	}
 };

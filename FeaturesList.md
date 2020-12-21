@@ -1,35 +1,51 @@
 # ACWW Web Save Editor Features List
 
+## House
+* Debts
+* Size
+* Unlock House Songs
+
 ## Pattern
-* Pattern Name
-* Creator Name
 * Creator Gender
 * Creator ID
-* Origin Town Name
-* Origin Town ID
-* Inject `.acww` files
+* Creator Name
 * Dump `.acww` files
+* Inject `.acww` files
+* Origin Town ID
+* Origin Town Name
+* Pattern Name
 * Set Pattern info to player info
 
 ## Player
-* Player Name
-* Gender
+* Bank Amount
+* Dresser Items
 * Facetype
-* Hairstyle
+* Gender
 * Haircolor
+* Hairstyle
+* Name
+* Pattern
+* Pocket Items
 * Tan
 * Wallet Amount
-* Bank Amount
-* See Pattern
-* Pocket Items
-* Dresser Items
+
+
+## Room
+* All 5 Rooms
+* Item Layer editing
+
+## Shop
+* 8 Able Sister Pattern
 
 ## Town
-* Town Name
 * Town ID
-* Turnip Price
 * Town Map Acres
+* Town Name
+* TownFlag Pattern
+* Turnip Price
 
 ## Villager
-* Species / ID
+* Furnitures
+* Pattern
 * Personality
+* Species / ID

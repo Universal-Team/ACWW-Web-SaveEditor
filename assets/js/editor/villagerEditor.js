@@ -29,6 +29,7 @@ let activeVillager, vNum = 0;
 import { getRandomNumber } from '../main.js';
 import { Villager } from '../core/villager.js';
 import { sav, RawData, SavData, SaveSav } from '../utils/savutils.js';
+import { InitializePatternEditor, LoadPattern } from './patternEditor.js';
 
 /* Villager switch. */
 document.getElementById("Villager 0").onclick = () => LoadVillager(0);
@@ -39,6 +40,29 @@ document.getElementById("Villager 4").onclick = () => LoadVillager(4);
 document.getElementById("Villager 5").onclick = () => LoadVillager(5);
 document.getElementById("Villager 6").onclick = () => LoadVillager(6);
 document.getElementById("Villager 7").onclick = () => LoadVillager(7);
+
+/* The Villager Pattern. */
+document.getElementById("VillagerPattern").onclick = function() {
+	if (activeVillager && activeVillager.Exist()) {
+		InitializePatternEditor(1);
+		LoadPattern(activeVillager.GetPattern());
+	}
+};
+
+/* Furniture Handling. */
+document.getElementById("VillagerFurnitures").onclick = () => CheckFurnitureClick();
+function CheckFurnitureClick() {
+	if (activeVillager && activeVillager.Exist()) { // Check if exist first!
+		const items = document.getElementById('VillagerFurnitures').children;
+
+		for (let i = 0; i < 10; i++) {
+			items[i].onclick = function() {
+				activeVillager.SetFurniture(i, document.getElementById("ItemList").value);
+				document.getElementById("VillagerFurnitures").replaceChild(activeVillager.GetFurniture(i).canvas, items[i]);
+			}
+		}
+	}
+};
 
 /* Villager Species / ID. */
 document.getElementById("Villager Species").onchange = function() {
@@ -89,10 +113,19 @@ export function LoadVillager(index) {
 	activeVillager = sav.GetVillager(index);
 	let exist = activeVillager.Exist(); // Get if villager exist.
 
+	document.getElementById("VillagerPattern").clear();
+	document.getElementById("VillagerFurnitures").clear();
+
 	if (exist) {
 		document.getElementById("VillagerInfo").classList.remove("d-none"); // Remove no-display if exist.
 
 		document.getElementById("Villager Species").value = activeVillager.GetID();
 		document.getElementById("Villager Personality").value = activeVillager.GetPersonality();
+		document.getElementById("VillagerPattern").appendChild(activeVillager.GetPattern().image);
+
+		/* Load Furnitures. */
+		for (let i = 0; i < 10; i++) {
+			document.getElementById("VillagerFurnitures").appendChild(activeVillager.GetFurniture(i).canvas);
+		}
 	}
 }

@@ -26,6 +26,7 @@
 
 import { ReadString, SetString } from '../utils/encoding.js';
 import { SavData } from '../utils/savutils.js';
+import { Item } from './item.js';
 
 const LETTER_EUR_USA = {
 	LETTER_SIZE: 0xF4,
@@ -199,6 +200,6 @@ export class Letter {
 	Exist() { return (Boolean)(this.GetFlags() != 0); };
 
 	/* Attachment Item. */
-	GetItem() { SavData.getUint16(this.startPoint + this.data.ATTACHMENT_ITEM, true); };
+	GetItem() { return new Item(SavData.getUint16(this.startPoint + this.data.ATTACHMENT_ITEM, true)); };
 	SetItem(v) { SavData.setUint16(this.startPoint + this.data.ATTACHMENT_ITEM, v, true); };
 };
